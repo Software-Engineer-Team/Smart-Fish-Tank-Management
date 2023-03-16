@@ -1,40 +1,40 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 
-export default class Block extends Component {
-  render() {
-    const {
-      flex,
-      row,
-      column,
-      center,
-      middle,
-      right,
-      space,
-      style,
-      children,
-      ...props
-    } = this.props;
-    const blockStyles = [
-      styles.block,
-      flex && { flex },
-      flex === "disabled" && { flex: 0 },
-      center && styles.center,
-      middle && styles.middle,
-      right && styles.right,
-      space && { justifyContent: `space-${space}` },
-      row && styles.row,
-      column && styles.column,
-      style,
-    ];
+const Block = (blockProps) => {
+  const {
+    flex,
+    row,
+    column,
+    center,
+    middle,
+    right,
+    space,
+    style,
+    children,
+    ...props
+  } = blockProps;
+  const blockStyles = [
+    styles.block,
+    flex && { flex },
+    flex === "disabled" && { flex: 0 },
+    center && styles.center,
+    middle && styles.middle,
+    right && styles.right,
+    space && { justifyContent: `space-${space}` },
+    row && styles.row,
+    column && styles.column,
+    style,
+  ];
 
-    return (
-      <View style={blockStyles} {...props}>
-        {children}
-      </View>
-    );
-  }
-}
+  return (
+    <View style={blockStyles} {...props}>
+      {children}
+    </View>
+  );
+};
+
+export default Block;
 
 const styles = StyleSheet.create({
   block: {
