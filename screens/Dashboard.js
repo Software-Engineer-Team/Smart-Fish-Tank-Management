@@ -12,7 +12,6 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/temp/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 
 export default function Dashboard() {
@@ -37,10 +36,10 @@ export default function Dashboard() {
           return result.json();
         })
         .then((data) => {
-          console.log(data[data.length - 1]);
           setTemp(parseInt(data[data.length - 1]["value"]));
         });
     };
+    fetchData();
     const intervalId = setInterval(fetchData, 5000);
     return () => clearInterval(intervalId);
   }, []);
@@ -86,7 +85,9 @@ export default function Dashboard() {
           >
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate("Settings", { name: "light" })}
+              onPress={() =>
+                navigation.navigate("Light-Settings", { name: "light" })
+              }
             >
               <Block center middle style={styles.button}>
                 <LightIcon size={38} />
