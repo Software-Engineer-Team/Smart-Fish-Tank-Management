@@ -1,4 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
+  REACT_NATIVE_APP_X_AIO_USERNAME,
+  REACT_NATIVE_APP_X_AIO_KEY,
+} from "@env";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
@@ -7,16 +12,17 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-let url =
-  "https://io.adafruit.com/api/v2/minhthuctp/feeds/lightstatus/data?X_AIO_Key=aio_GIEa40tFpivnmM7FpBzySsdJnSWL";
+
+let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/temp/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 
 export default function Dashboard() {
-  const LightIcon = settings["light"].icon;
-  const ACIcon = settings["ac"].icon;
-  const TempIcon = settings["temperature"].icon;
-  const FanIcon = settings["fan"].icon;
+  const LightIcon = settings.light.icon;
+  const ACIcon = settings.ac.icon;
+  const TempIcon = settings.temperature.icon;
+  const FanIcon = settings.fan.icon;
   const WiFiIcon = settings["wi-fi"].icon;
-  const ElectricityIcon = settings["electricity"].icon;
+  const ElectricityIcon = settings.electricity.icon;
+  const [temp, setTemp] = useState(0);
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -25,28 +31,38 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    fetch(url)
-      .then((result) => {
-        return result.json();
-      })
-      .then((data) => {
-        console.log(data);
-      });
+    const fetchData = () => {
+      fetch(url)
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          console.log(data[data.length - 1]);
+          setTemp(parseInt(data[data.length - 1]["value"]));
+        });
+    };
+    const intervalId = setInterval(fetchData, 5000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
     <Block style={styles.dashboard}>
-      <Block column style={{ marginVertical: theme.sizes.base * 2 }} />
-
-      <Block row style={{ paddingVertical: 10 }}>
+      <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
         <Block flex={1.5} row style={{ alignItems: "flex-end" }}>
-          <Text h1>34</Text>
-          <Text h1 size={34} height={80} weight="600" spacing={0.1}>
+          <Text h1>{temp}</Text>
+          <Text
+            h1
+            size={34}
+            height={80}
+            weight="600"
+            spacing={0.1}
+            color={theme.colors.accent1}
+          >
             °C
           </Text>
         </Block>
         <Block flex={1} column>
-          <Text caption>Humidity</Text>
+          <Text caption>Temperature</Text>
           <LineChart
             yMax={100}
             yMin={0}
@@ -101,7 +117,10 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Settings", { name: "temperature" })
+                navigation.navigate("Temperature", {
+                  name: "temperature",
+                  value: temp,
+                })
               }
             >
               <Block center middle style={styles.button}>
@@ -167,6 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: theme.sizes.base * 2,
     marginBottom: -theme.sizes.base * 6,
+    backgroundColor: theme.colors.bg,
   },
   buttons: {
     flex: 1,

@@ -27,13 +27,24 @@ export default {
       />
     ),
   },
-  temperature: {
+  temperatureCelsius: {
     name: "Temperature",
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.accent}
         name="temperature-celsius"
+        {...props}
+      />
+    ),
+  },
+  temperature: {
+    name: "Temperature",
+    icon: ({ size, color, ...props }) => (
+      <MaterialCommunityIcons
+        size={size || theme.sizes.font}
+        color={color || theme.colors.accent}
+        name="coolant-temperature"
         {...props}
       />
     ),
