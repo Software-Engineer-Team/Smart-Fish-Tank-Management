@@ -36,7 +36,7 @@ export default function Dashboard() {
           return result.json();
         })
         .then((data) => {
-          setTemp(parseInt(data[data.length - 1]["value"]));
+          setTemp(parseInt(data[0]["value"]));
         });
     };
     fetchData();

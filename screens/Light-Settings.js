@@ -57,8 +57,9 @@ export default function LightSettings() {
           return result.json();
         })
         .then((data) => {
-          setBrightness((data[0].value / MAXIMUMVALUE) * 100);
-          if (data[0].value > 3000) {
+          let bn = parseInt(((data[0].value / MAXIMUMVALUE) * 100).toFixed(2));
+          setBrightness(bn);
+          if (bn >= 50) {
             return setIsEnabled(true);
           }
           setIsEnabled(false);
