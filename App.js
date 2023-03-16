@@ -1,6 +1,15 @@
 import React from "react";
-import { createAppContainer } from "react-navigation";
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import SmartTankFish from "./navigation/SmartTankFish";
 
-import SmartHome from "./navigation/SmartHome";
-
-export default createAppContainer(SmartHome);
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Provider store={store}>
+        <SmartTankFish />
+      </Provider>
+    </NavigationContainer>
+  );
+}
