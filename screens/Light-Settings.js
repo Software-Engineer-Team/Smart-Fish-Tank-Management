@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { client, messageHandler } from "../utils/mqtt";
 import {
   REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
   REACT_NATIVE_APP_X_AIO_USERNAME,
@@ -8,7 +9,6 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   ImageBackground,
-  TouchableOpacity,
   View,
   Switch,
 } from "react-native";
@@ -17,7 +17,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import * as theme from "../theme";
-import { Block, Text, PanSlider } from "../components";
+import { Block, Text } from "../components";
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 let MAXIMUMVALUE = 4096;
 
@@ -65,11 +65,20 @@ export default function LightSettings() {
           setIsEnabled(false);
         })
         .catch((error) => console.error(error));
+
+      messageHandler((message) => {
+        let bn = parseInt(((message / MAXIMUMVALUE) * 100).toFixed(2));
+        setBrightness(bn);
+        if (bn >= 50) {
+          return setIsEnabled(true);
+        }
+        setIsEnabled(false);
+      });
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
+    // const intervalId = setInterval(fetchData, 5000);
 
-    return () => clearInterval(intervalId);
+    return () => client.end();
   }, []);
 
   const toggleSwitch = () => {
