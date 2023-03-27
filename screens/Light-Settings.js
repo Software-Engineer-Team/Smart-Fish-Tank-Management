@@ -28,7 +28,7 @@ export default function LightSettings() {
 
   const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
-  const [brightness, setBrightness] = useState(50);
+  const [brightness, setBrightness] = useState(0);
 
   useLayoutEffect(() => {
     navigation.setOptions({
