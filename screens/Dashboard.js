@@ -14,7 +14,7 @@ import { Block, Text } from "../components";
 import settings from "../settings";
 import { client, messageHandler } from "../utils/mqtt";
 
-let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/temp/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
+let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 
 export default function Dashboard() {
   const LightIcon = settings.light.icon;
@@ -22,7 +22,7 @@ export default function Dashboard() {
   const TempIcon = settings.temperature.icon;
   const FanIcon = settings.fan.icon;
   const WiFiIcon = settings["wi-fi"].icon;
-  const ElectricityIcon = settings.electricity.icon;
+  const ReminderIcon = settings.reminder.icon;
   const [temp, setTemp] = useState(0);
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -173,13 +173,13 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Settings", { name: "electricity" })
+                navigation.navigate("Reminder", { name: "reminder" })
               }
             >
               <Block center middle style={styles.button}>
-                <ElectricityIcon size={38} />
+                <ReminderIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["electricity"].name}
+                  {settings["reminder"].name}
                 </Text>
               </Block>
             </TouchableOpacity>
