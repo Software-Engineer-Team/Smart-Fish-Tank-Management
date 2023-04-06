@@ -12,7 +12,8 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-import { client, messageHandler } from "../utils/mqtt";
+// import { client, messageHandler } from "../utils/mqtt";
+import { tempHandler, tempClient } from "../utils/socketio";
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/temp/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 
 export default function Dashboard() {
@@ -44,10 +45,11 @@ export default function Dashboard() {
     fetchData();
     // const intervalId = setInterval(fetchData, 5000);
     // return () => clearInterval(intervalId);
-    messageHandler((message) => setTemp(message));
+    // messageHandler((message) => setTemp(message));
+    tempHandler((message) => setTemp(message));
 
     return () => {
-      client.end();
+      tempClient.end();
     };
   }, []);
 
