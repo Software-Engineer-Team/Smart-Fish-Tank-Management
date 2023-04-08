@@ -1,33 +1,26 @@
-import React, { useEffect, useState } from "react";
-import {
-  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
-  REACT_NATIVE_APP_X_AIO_USERNAME,
-  REACT_NATIVE_APP_X_AIO_KEY,
-} from "@env";
+import React, { useState, useLayoutEffect } from "react";
 import {
   View,
   Button,
-  ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useLayoutEffect } from "react";
-import { LineChart } from "react-native-svg-charts";
-import * as shape from "d3-shape";
 import * as theme from "../theme";
-import { Block, Text } from "../components";
-import settings from "../settings";
-import { client, messageHandler } from "../utils/mqtt";
+import { Text } from "../components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "react-native-gesture-handler";
 import { Calendar } from "react-native-calendars";
 
 export default function Create_reminder() {
-  const [val, setVal] = useState("Label");
+  const {
+    params: { name },
+  } = useRoute();
+
+  const navigation = useNavigation();
   const [time, setTime] = useState(new Date());
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
@@ -39,10 +32,7 @@ export default function Create_reminder() {
         : "0" + (time.getMonth() + 1)
     }-${time.getDate() >= 10 ? time.getDate() : "0" + time.getDate()}`
   );
-  const {
-    params: { name },
-  } = useRoute();
-  const navigation = useNavigation();
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({ onPress }) => (
@@ -63,8 +53,8 @@ export default function Create_reminder() {
     });
   });
   const ChangeTime = (event, currentDate) => {
-    setShow(!show);
-    setTime(currentDate);
+    setShow((show) => !show);
+    if (event.type == "set") setTime((time) => currentDate);
   };
   const onDayPress = (currentdate) => {
     date = new Date(currentdate.timestamp);
@@ -90,7 +80,7 @@ export default function Create_reminder() {
           size={40}
           paddingTop={10}
           onPress={() => {
-            setShow(!show);
+            setShow((show) => !show);
           }}
         ></MaterialIcons>
       </View>
@@ -124,18 +114,22 @@ export default function Create_reminder() {
           paddingTop: 20,
         }}
       >
-        <Button
-          title="Cancel"
+        <Pressable
+          style={style.button}
           onPress={() => {
             navigation.goBack();
           }}
-        ></Button>
-        <Button
-          title="Save"
+        >
+          <Text style={style.button_text}>Cancel</Text>
+        </Pressable>
+        <Pressable
+          style={style.button}
           onPress={() => {
             console.log("Hello");
           }}
-        ></Button>
+        >
+          <Text style={style.button_text}>Save</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -161,5 +155,12 @@ const style = StyleSheet.create({
   display_text: {
     fontSize: 50,
     marginHorizontal: 20,
+  },
+  button: {
+    backgroundColor: "transparent",
+  },
+  button_text: {
+    fontSize: 20,
+    color: "gray",
   },
 });
