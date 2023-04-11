@@ -48,13 +48,13 @@ export default function Dashboard() {
 
     return () => {
       socket.off();
-       client.end();
+      client.end();
     };
   }, []);
 
   return (
-lock style={styles.dashboard}>
-         <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
+    <Block style={styles.dashboard}>
+      <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
         <Block flex={1.5} row style={{ alignItems: "flex-end" }}>
           <Text h1>{temp}</Text>
           <Text
