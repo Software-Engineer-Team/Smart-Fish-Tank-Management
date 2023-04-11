@@ -6,7 +6,7 @@ import {
 } from "@env";
 import {
   Button,
-  ScrollView,
+  View,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -17,7 +17,7 @@ import { useLayoutEffect } from "react";
 import { LineChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
-import { Block, Text } from "../components";
+import { Block, Text, ReminderSlice, ReminderView } from "../components";
 import settings from "../settings";
 import { client, messageHandler } from "../utils/mqtt";
 
@@ -49,11 +49,31 @@ export default function Reminder() {
   });
 
   return (
-    <Button
-      title="Create new reminder"
-      onPress={() => {
-        navigation.navigate("Create-reminder", { name: "create_reminder" });
-      }}
-    ></Button>
+    <View>
+      <Button
+        title="Create new reminder"
+        onPress={() => {
+          navigation.navigate("Create-reminder", { name: "create_reminder" });
+        }}
+      ></Button>
+      <ReminderView
+        show={true}
+        title={"Upcomming"}
+        data={[
+          { _id: "1", title: "Hello", date: new Date() },
+          { _id: "2", title: "Hello", date: new Date() },
+        ]}
+        name="Up comming"
+      ></ReminderView>
+      <ReminderView
+        show={true}
+        title={"Unfinished tasks"}
+        data={[
+          { _id: "1", title: "Hello", date: new Date() },
+          { _id: "2", title: "Hello", date: new Date() },
+        ]}
+        name="Up comming"
+      ></ReminderView>
+    </View>
   );
 }
