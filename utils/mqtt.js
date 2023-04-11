@@ -6,10 +6,7 @@ import {
 import { socket } from "./socketio";
 
 const URL = "wss://io.adafruit.com:443/mqtt/";
-const TOPICS = [
-  `${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/yolo-temp`,
-  `${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/yolo-light`,
-];
+const TOPICS = [`${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus`];
 
 const client = mqtt.connect(URL, {
   username: REACT_NATIVE_APP_X_AIO_USERNAME,

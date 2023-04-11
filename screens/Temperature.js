@@ -17,7 +17,7 @@ export default function Temperature() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({ onPress }) => (
-        <TouchableWithoutFeedback onPress={() => onPress()}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <FontAwesome
             size={theme.sizes.font * 1.5}
             color={theme.colors.black}

@@ -12,9 +12,9 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-import { messageHandler } from "../utils/mqtt";
 import { socket } from "../utils/socketio";
-let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/temp/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
+import { client, messageHandler } from "../utils/mqtt";
+let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 
 export default function Dashboard() {
   const LightIcon = settings.light.icon;
@@ -22,7 +22,7 @@ export default function Dashboard() {
   const TempIcon = settings.temperature.icon;
   const FanIcon = settings.fan.icon;
   const WiFiIcon = settings["wi-fi"].icon;
-  const ElectricityIcon = settings.electricity.icon;
+  const ReminderIcon = settings.reminder.icon;
   const [temp, setTemp] = useState(0);
   const navigation = useNavigation();
 
@@ -48,12 +48,13 @@ export default function Dashboard() {
 
     return () => {
       socket.off();
+       client.end();
     };
   }, []);
 
   return (
-    <Block style={styles.dashboard}>
-      <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
+lock style={styles.dashboard}>
+         <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
         <Block flex={1.5} row style={{ alignItems: "flex-end" }}>
           <Text h1>{temp}</Text>
           <Text
@@ -172,13 +173,13 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Settings", { name: "electricity" })
+                navigation.navigate("Reminder", { name: "reminder" })
               }
             >
               <Block center middle style={styles.button}>
-                <ElectricityIcon size={38} />
+                <ReminderIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["electricity"].name}
+                  {settings["reminder"].name}
                 </Text>
               </Block>
             </TouchableOpacity>
