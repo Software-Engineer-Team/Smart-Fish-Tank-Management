@@ -18,7 +18,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
-import { lightHandler, lightClient } from "../utils/socketio";
+import { messageHandler } from "../utils/mqtt";
+import { socket } from "../utils/socketio";
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 let MAXIMUMVALUE = 4096;
 
@@ -67,16 +68,7 @@ export default function LightSettings() {
         })
         .catch((error) => console.error(error));
 
-      // messageHandler((message) => {
-      //   let bn = parseInt(((message / MAXIMUMVALUE) * 100).toFixed(2));
-      //   setBrightness(bn);
-      //   if (bn >= 50) {
-      //     return setIsEnabled(true);
-      //   }
-      //   setIsEnabled(false);
-      // });
-
-      lightHandler((message) => {
+      messageHandler((message) => {
         let bn = parseInt(((message / MAXIMUMVALUE) * 100).toFixed(2));
         setBrightness(bn);
         if (bn >= 50) {
@@ -86,9 +78,10 @@ export default function LightSettings() {
       });
     };
     fetchData();
-    // const intervalId = setInterval(fetchData, 5000);
 
-    return () => lightClient.end();
+    return () => {
+      socket.off();
+    };
   }, []);
 
   const toggleSwitch = () => {

@@ -4,6 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 // import { store } from "./store";
 import SmartTankFish from "./navigation/SmartTankFish";
 
+navigator.__defineGetter__("userAgent", function() {
+  // you have to import rect native first !!
+  return "react-native";
+});
+
 export default function App() {
   return (
     <NavigationContainer>

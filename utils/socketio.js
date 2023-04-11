@@ -1,21 +1,21 @@
-import { Manager } from "socket.io-client";
+import { io } from "socket.io-client";
 import { REACT_NATIVE_APP_ENDPOINT_SERVER } from "@env";
 
-const manager = new Manager(`${REACT_NATIVE_APP_ENDPOINT_SERVER}`);
+console.log(REACT_NATIVE_APP_ENDPOINT_SERVER);
 
-const lightClient = manager.socket("/lightStatus").io;
-const tempClient = manager.socket("/tempStatus").io;
+const socket = io(REACT_NATIVE_APP_ENDPOINT_SERVER, {
+  transports: ["websocket"],
+  forceNode: true,
+  forceNew: true,
+});
 
-const lightHandler = (callback) => {
-  lightClient.on("light", (lightStatus) => {
-    callback(lightStatus);
-  });
-};
+socket.on("connect_error", (err) => {
+  console.log(err);
+  console.log("connect_error due to " + err.message);
+});
 
-const tempHandler = (callback) => {
-  tempClient.on("temperature", (tempStatus) => {
-    callback(tempStatus);
-  });
-};
+socket.on("connect", () => {
+  console.log("the connection was successfully established");
+});
 
-export { lightHandler, tempHandler, lightClient, tempClient };
+export { socket };
