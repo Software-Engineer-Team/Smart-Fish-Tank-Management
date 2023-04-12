@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,7 +12,7 @@ import * as theme from "../theme";
 
 const ReminderView = (props) => {
   const [show, setShow] = useState(true);
-  // console.log(props);
+
   return (
     <View>
       <View style={{ flexDirection: "row" }}>
@@ -51,8 +51,8 @@ const ReminderView = (props) => {
             return (
               <ReminderSlice
                 key={reminder._id}
-                date={reminder.date}
-                title={reminder.title}
+                data={reminder}
+                deleteChange={props.deleteChange}
               ></ReminderSlice>
             );
           })}

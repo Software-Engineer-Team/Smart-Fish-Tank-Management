@@ -125,7 +125,10 @@ export default function Create_reminder() {
         <Pressable
           style={style.button}
           onPress={() => {
-            console.log("Hello");
+            navigation.navigate("Reminder", {
+              name: "Reminder",
+              reminder: { date: time, title: text },
+            });
           }}
         >
           <Text style={style.button_text}>Save</Text>

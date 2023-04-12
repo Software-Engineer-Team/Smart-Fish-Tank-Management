@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, ScrollView, Text, Pressable } from "react-native";
 
 const ReminderSlice = (props) => {
+  const date = props.data.date;
+  const title = props.data.title;
   const Format_date = (date) => {
     const month = [
       "Jan",
@@ -27,8 +29,8 @@ const ReminderSlice = (props) => {
     <View style={{ flexDirection: "row", paddingLeft: 30, padding: 10 }}>
       <View style={{ borderWidth: 1, borderStyle: "solid" }}></View>
       <View>
-        <Text style={{ fontSize: 20 }}> {props.title} </Text>
-        <Text> {Format_date(props.date)} </Text>
+        <Text style={{ fontSize: 20 }}> {title} </Text>
+        <Text> {Format_date(date)} </Text>
       </View>
       <View
         style={{
@@ -43,7 +45,7 @@ const ReminderSlice = (props) => {
         <Pressable
           style={style.button}
           onPress={() => {
-            console.log("Hello");
+            props.deleteChange(props.data);
           }}
         >
           <Text>MARK AS DONE</Text>
