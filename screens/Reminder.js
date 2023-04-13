@@ -20,29 +20,48 @@ import * as theme from "../theme";
 import { Block, Text, ReminderSlice, ReminderView } from "../components";
 import settings from "../settings";
 import { client, messageHandler } from "../utils/mqtt";
-
-const dummy = [
-  { _id: "1", title: "Hello", date: new Date() },
-  { _id: "2", title: "Hello", date: new Date() },
-];
-
-// useEffect(() => {}, []);
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Reminder() {
+  const [today, setToday] = useState([]);
+  const [other, setOther] = useState([]);
+
   const {
     params: { name, reminder },
   } = useRoute();
 
-  const [data, setData] = useState(dummy);
-  const MarkasDone = (reminder) => {
-    let dataCopy = [...data];
-    const id = dataCopy.indexOf(reminder);
-    dataCopy.splice(id, 1);
-    setData(dataCopy);
+  const MarkasDone = (data) => {
+    console.log(data);
+
+    fetch("http://192.168.1.2:3000/reminder/" + data.reminder._id, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log(res);
+        if (data.section == "Today") {
+          let dataCopy = [...today];
+          const id = dataCopy.indexOf(data.reminder);
+          dataCopy.splice(id, 1);
+          setToday(dataCopy);
+        } else {
+          console.log("Hello");
+          let dataCopy = [...other];
+          const id = dataCopy.indexOf(data.reminder);
+          dataCopy.splice(id, 1);
+
+          setOther(dataCopy);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const navigation = useNavigation();
-  console.log(data);
+  // console.log(data);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({ onPress }) => (
@@ -63,16 +82,29 @@ export default function Reminder() {
     });
   });
   // console.log(reminder);
+  // useEffect(() => {
+  //   if (reminder) {
+  //     const id = data.length + 1;
+  //     let reminderCopy = { ...reminder, _id: { id } };
+  //     let dataCopy = [...data, reminder];
+  //     console.log(dataCopy);
+  //     setData(dataCopy);
+  //   }
+  // }, [reminder]);
   useEffect(() => {
-    if (reminder) {
-      const id = data.length + 1;
-      let reminderCopy = { ...reminder, _id: { id } };
-      let dataCopy = [...data, reminder];
-      console.log(dataCopy);
-      setData(dataCopy);
-    }
-  }, [reminder]);
-  console.log(data);
+    fetch("http://192.168.1.2:3000/reminder", { method: "GET" })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setToday(res.today);
+        setOther(res.other);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <View>
       <Button
@@ -83,37 +115,20 @@ export default function Reminder() {
           });
         }}
       ></Button>
-      <ReminderView
-        show={true}
-        title="Today"
-        // data={[
-        //   { _id: "1", title: "Hello", date: new Date() },
-        //   { _id: "2", title: "Hello", date: new Date() },
-        // ]}
-        data={data}
-        deleteChange={MarkasDone}
-      ></ReminderView>
-      {/* <View
-        style={{
-          marginRight: 50,
-          marginLeft: 50,
-          marginTop: 5,
-          marginBottom: 5,
-          borderWidth: 1,
-          borderStyle: "solid",
-          borderColor: "grey",
-        }}
-      ></View> */}
-      <ReminderView
-        show={true}
-        title={"Unfinished tasks"}
-        // data={[
-        //   { _id: "1", title: "Hello", date: new Date() },
-        //   { _id: "2", title: "Hello", date: new Date() },
-        // ]}
-        data={data}
-        deleteChange={MarkasDone}
-      ></ReminderView>
+      <ScrollView>
+        <ReminderView
+          show={true}
+          title="Today"
+          data={today}
+          deleteChange={MarkasDone}
+        ></ReminderView>
+        <ReminderView
+          show={true}
+          title={"Unfinished tasks"}
+          data={other}
+          deleteChange={MarkasDone}
+        ></ReminderView>
+      </ScrollView>
     </View>
   );
 }

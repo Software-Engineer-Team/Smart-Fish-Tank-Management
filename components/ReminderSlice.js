@@ -2,8 +2,8 @@ import React from "react";
 import { View, StyleSheet, ScrollView, Text, Pressable } from "react-native";
 
 const ReminderSlice = (props) => {
-  const date = props.data.date;
-  const title = props.data.title;
+  const date = new Date(props.data.reminder.date);
+  const title = props.data.reminder.title;
   const Format_date = (date) => {
     const month = [
       "Jan",

@@ -12,7 +12,6 @@ import * as theme from "../theme";
 
 const ReminderView = (props) => {
   const [show, setShow] = useState(true);
-
   return (
     <View>
       <View style={{ flexDirection: "row" }}>
@@ -31,27 +30,26 @@ const ReminderView = (props) => {
             ></MaterialIcons>
           </TouchableWithoutFeedback>
         )}
-        {!show && (
-          <TouchableWithoutFeedback style={{}}>
-            <MaterialIcons
-              name="expand-less"
-              style={{ fontSize: 30, position: "absolute", top: 5, right: 10 }}
-              onPress={() => {
-                setShow((show) => !show);
-              }}
-            ></MaterialIcons>
-          </TouchableWithoutFeedback>
-        )}
       </View>
+      {!show && (
+        <TouchableWithoutFeedback style={{}}>
+          <MaterialIcons
+            name="expand-less"
+            style={{ fontSize: 30, position: "absolute", top: 5, right: 10 }}
+            onPress={() => {
+              setShow((show) => !show);
+            }}
+          ></MaterialIcons>
+        </TouchableWithoutFeedback>
+      )}
 
       {show && (
         <ScrollView>
           {props.data.map((reminder) => {
-            // console.log(reminder);
             return (
               <ReminderSlice
                 key={reminder._id}
-                data={reminder}
+                data={{ reminder, section: props.title }}
                 deleteChange={props.deleteChange}
               ></ReminderSlice>
             );
