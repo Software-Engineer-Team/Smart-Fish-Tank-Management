@@ -11,7 +11,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useLayoutEffect } from "react";
 import { LineChart } from "react-native-svg-charts";
@@ -27,11 +31,27 @@ export default function Reminder() {
   const [other, setOther] = useState([]);
 
   const {
-    params: { name, reminder },
+    params: { name },
   } = useRoute();
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetch("http://192.168.1.2:3000/reminder", { method: "GET" })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        // console.log(res);
+        setToday(res.today);
+        setOther(res.other);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [isFocused]);
   const MarkasDone = (data) => {
-    console.log(data);
+    // console.log(data);
 
     fetch("http://192.168.1.2:3000/reminder/" + data.reminder._id, {
       method: "DELETE",
@@ -40,14 +60,14 @@ export default function Reminder() {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (data.section == "Today") {
           let dataCopy = [...today];
           const id = dataCopy.indexOf(data.reminder);
           dataCopy.splice(id, 1);
           setToday(dataCopy);
         } else {
-          console.log("Hello");
+          // console.log("Hello");
           let dataCopy = [...other];
           const id = dataCopy.indexOf(data.reminder);
           dataCopy.splice(id, 1);
@@ -91,19 +111,6 @@ export default function Reminder() {
   //     setData(dataCopy);
   //   }
   // }, [reminder]);
-  useEffect(() => {
-    fetch("http://192.168.1.2:3000/reminder", { method: "GET" })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        setToday(res.today);
-        setOther(res.other);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   return (
     <View>

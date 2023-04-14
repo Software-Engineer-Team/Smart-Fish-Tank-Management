@@ -125,9 +125,27 @@ export default function Create_reminder() {
         <Pressable
           style={style.button}
           onPress={() => {
+            const newReminder = {
+              username: "admin",
+              title: text,
+              date: time,
+            };
+            console.log(newReminder);
+            fetch("http://192.168.1.2:3000/reminder", {
+              method: "POST",
+              body: JSON.stringify(newReminder),
+              headers: {
+                "Content-type": "application/json",
+              },
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((result) => console.log(result))
+              .catch((err) => console.log(err));
+
             navigation.navigate("Reminder", {
               name: "Reminder",
-              reminder: { date: time, title: text },
             });
           }}
         >

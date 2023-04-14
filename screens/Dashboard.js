@@ -73,10 +73,13 @@ export default function Dashboard() {
           <LineChart
             yMax={100}
             yMin={0}
-            data={[0, 20, 25, 15, 20, 55, 60]}
+            data={[0, 50, 20, 25, 15, 20, 55, 60]}
             style={{ flex: 0.8 }}
             curve={shape.curveNatural}
-            svg={{ stroke: theme.colors.accent, strokeWidth: 3 }}
+            svg={{
+              stroke: theme.colors.accent,
+              strokeWidth: 2,
+            }}
           />
         </Block>
       </Block>
