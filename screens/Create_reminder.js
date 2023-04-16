@@ -130,7 +130,7 @@ export default function Create_reminder() {
               title: text,
               date: time,
             };
-            console.log(newReminder);
+            // console.log(newReminder);
             fetch("http://192.168.1.2:3000/reminder", {
               method: "POST",
               body: JSON.stringify(newReminder),
