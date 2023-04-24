@@ -10,7 +10,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="lightbulb-on-outline"
         {...props}
       />
@@ -21,7 +21,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="air-conditioner"
         {...props}
       />
@@ -32,7 +32,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="temperature-celsius"
         {...props}
       />
@@ -43,7 +43,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="coolant-temperature"
         {...props}
       />
@@ -54,7 +54,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="fan"
         {...props}
       />
@@ -65,7 +65,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <FontAwesome
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="wifi"
         {...props}
       />
@@ -76,7 +76,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="power"
         {...props}
       />
@@ -87,7 +87,7 @@ export default {
     icon: ({ size, color, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
-        color={color || theme.colors.accent}
+        color={color || theme.colors.base}
         name="reminder"
         {...props}
       />

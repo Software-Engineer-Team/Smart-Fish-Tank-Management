@@ -6,6 +6,7 @@ const userSlice = createSlice({
     name: "",
     ada_key: "",
     username: "",
+    ObjectID: "",
   },
   reducers: {
     setUser(state, action) {
@@ -13,6 +14,7 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.ada_key = action.payload.ada_key;
       state.username = action.payload.username;
+      state.ObjectID = action.payload.ObjectID;
     },
   },
 });

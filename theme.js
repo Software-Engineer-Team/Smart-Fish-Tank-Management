@@ -9,6 +9,7 @@ const colors = {
   button: "#F4F5F7",
   bg: "#3b3b3b05",
   header: "#f2f2f2",
+  base: "rgba(39,108,186, 0.8)",
 };
 
 const sizes = {

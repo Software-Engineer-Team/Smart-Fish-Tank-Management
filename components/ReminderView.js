@@ -15,7 +15,13 @@ const ReminderView = (props) => {
   return (
     <View>
       <View style={{ flexDirection: "row" }}>
-        <Text style={{ fontSize: 25 }}>
+        <Text
+          style={{
+            color: show ? "rgba(39,108,186, 0.8)" : "black",
+            fontSize: 20,
+            fontWeight: "bold",
+          }}
+        >
           {" "}
           {props.title} ({props.data.length})
         </Text>
@@ -23,7 +29,8 @@ const ReminderView = (props) => {
           <TouchableWithoutFeedback style={{}}>
             <MaterialIcons
               name="expand-more"
-              style={{ fontSize: 30, position: "absolute", top: 5, right: 10 }}
+              style={{ fontSize: 25, position: "absolute", top: 5, right: 10 }}
+              color={"rgba(39,108,186, 0.8)"}
               onPress={() => {
                 setShow((show) => !show);
               }}
@@ -35,7 +42,7 @@ const ReminderView = (props) => {
         <TouchableWithoutFeedback style={{}}>
           <MaterialIcons
             name="expand-less"
-            style={{ fontSize: 30, position: "absolute", top: 5, right: 10 }}
+            style={{ fontSize: 25, position: "absolute", top: 5, right: 10 }}
             onPress={() => {
               setShow((show) => !show);
             }}

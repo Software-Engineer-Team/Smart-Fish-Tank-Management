@@ -5,33 +5,46 @@ import {
   StyleSheet,
   Pressable,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as theme from "../theme";
 import { Text } from "../components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "react-native-gesture-handler";
-import { Calendar } from "react-native-calendars";
+import { store } from "../store";
 
 export default function Create_reminder() {
   const {
     params: { name },
   } = useRoute();
 
-  const navigation = useNavigation();
-  const [time, setTime] = useState(new Date());
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState("");
+  const AlertTitle = () =>
+    Alert.alert("Reminder", "Title is empty", [
+      // {
+      //   text: "Cancel",
+      //   onPress: () => console.log("Cancel Pressed"),
+      //   style: "cancel",
+      // },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
 
-  const [mark, setMark] = useState(
-    `${time.getFullYear()}-${
-      time.getMonth() + 1 >= 10
-        ? time.getMonth() + 1
-        : "0" + (time.getMonth() + 1)
-    }-${time.getDate() >= 10 ? time.getDate() : "0" + time.getDate()}`
-  );
+  const AlertDescription = () =>
+    Alert.alert("Reminder", "Description is empty", [
+      // {
+      //   text: "Cancel",
+      //   onPress: () => console.log("Cancel Pressed"),
+      //   style: "cancel",
+      // },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+
+  const navigation = useNavigation();
+  const [time, setTime] = useState({ show: false, data: new Date() });
+  const [date, setDate] = useState({ show: false, data: new Date() });
+  const [title, setTitle] = useState({ clicked: false, data: "" });
+  const [descript, setDescript] = useState({ clicked: false, data: "" });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -53,60 +66,120 @@ export default function Create_reminder() {
     });
   });
   const ChangeTime = (event, currentDate) => {
-    setShow((show) => !show);
-    if (event.type == "set") setTime((time) => currentDate);
+    setTime((previousState) => {
+      return { show: !previousState.show, data: currentDate };
+    });
   };
-  const onDayPress = (currentdate) => {
-    date = new Date(currentdate.timestamp);
-    date.setHours(time.getHours(), time.getMinutes());
-    setMark(currentdate.dateString);
-    setTime(date);
+  const ChangeDate = (event, currentDate) => {
+    setDate((previousState) => {
+      return { show: !previousState.show, data: currentDate };
+    });
+  };
+  const getBorderColor = (data) => {
+    if (data.clicked) {
+      return "rgba(39,108,186, 0.8)";
+    } else {
+      return "grey";
+    }
   };
   return (
     <View style={{ paddingTop: 10 }}>
-      <TextInput
-        style={style.input_text}
-        placeholder="Label"
-        value={text}
-        fontSize={50}
-        onChangeText={(text) => setText(text)}
-      ></TextInput>
       <View style={style.display_time}>
-        <Text style={style.display_text}>
-          {time.getHours()}:{time.getMinutes()}
-        </Text>
-        <MaterialIcons
-          name="create"
-          size={40}
-          paddingTop={10}
+        <Pressable
           onPress={() => {
-            setShow((show) => !show);
+            setTime((previousState) => {
+              return { ...previousState, show: !previousState.show };
+            });
           }}
-        ></MaterialIcons>
+        >
+          <Text>Choose time</Text>
+        </Pressable>
+        <Text style={style.display_text}>
+          {time.data.getHours()}:{time.data.getMinutes()}
+        </Text>
       </View>
-      {show && (
+      <View style={style.display_time}>
+        <Pressable
+          onPress={() => {
+            setDate((previousState) => {
+              return { ...previousState, show: !previousState.show };
+            });
+          }}
+        >
+          <Text>Choose date</Text>
+        </Pressable>
+        <Text style={style.display_text}>
+          {date.data.getDate()}/{date.data.getMonth() + 1}/
+          {date.data.getFullYear()}
+        </Text>
+      </View>
+      <Text style={[style.text_input, { color: getBorderColor(title) }]}>
+        Title
+      </Text>
+      <TextInput
+        style={[style.input_text, { borderBottomColor: getBorderColor(title) }]}
+        value={title.data}
+        multiline={true}
+        onChangeText={(text) =>
+          setTitle((previousState) => {
+            return { ...previousState, data: text };
+          })
+        }
+        onFocus={() => {
+          setTitle((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+        onBlur={() => {
+          setTitle((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+      ></TextInput>
+      <Text style={[style.text_input, { color: getBorderColor(descript) }]}>
+        Description
+      </Text>
+      <TextInput
+        style={[
+          style.input_text,
+          { borderBottomColor: getBorderColor(descript) },
+        ]}
+        value={descript.data}
+        multiline={true}
+        onChangeText={(text) =>
+          setDescript((previousState) => {
+            return { ...previousState, data: text };
+          })
+        }
+        onFocus={() => {
+          setDescript((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+        onBlur={() => {
+          setDescript((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+      ></TextInput>
+
+      {time.show && (
         <DateTimePicker
           mode="time"
           display="spinner"
           is24Hour={true}
-          value={time}
+          value={time.data}
           onChange={ChangeTime}
         ></DateTimePicker>
       )}
-      <Calendar
-        style={{ paddingTop: 20 }}
-        theme={{
-          backgroundColor: "transparent",
-          calendarBackground: "transparent",
-        }}
-        markedDates={{
-          [mark]: {
-            selected: true,
-            selectedColor: `#1e90ff`,
-          },
-        }}
-        onDayPress={onDayPress}
-      ></Calendar>
+
+      {date.show && (
+        <DateTimePicker
+          display="spinner"
+          value={date.data}
+          onChange={ChangeDate}
+        ></DateTimePicker>
+      )}
       <View
         style={{
           flexDirection: "row",
@@ -120,17 +193,34 @@ export default function Create_reminder() {
             navigation.goBack();
           }}
         >
-          <Text style={style.button_text}>Cancel</Text>
+          <Text style={[style.button_text, { color: "gray" }]}>Cancel</Text>
         </Pressable>
         <Pressable
           style={style.button}
           onPress={() => {
+            if (title.data.trim().length === 0) {
+              AlertTitle();
+              return;
+            }
+            if (descript.data.trim().length === 0) {
+              AlertDescription();
+              return;
+            }
+            var dateStore = new Date();
+            dateStore.setFullYear(
+              date.data.getFullYear(),
+              date.data.getMonth(),
+              date.data.getDate()
+            );
+            dateStore.setHours(time.data.getHours(), time.data.getMinutes());
+
             const newReminder = {
-              username: "admin",
-              title: text,
-              date: time,
+              user_id: store.getState().user.ObjectID,
+              title: title.data,
+              description: descript.data,
+              date: dateStore,
             };
-            // console.log(newReminder);
+            console.log(newReminder);
             fetch("http://192.168.1.2:3000/reminder", {
               method: "POST",
               body: JSON.stringify(newReminder),
@@ -149,7 +239,14 @@ export default function Create_reminder() {
             });
           }}
         >
-          <Text style={style.button_text}>Save</Text>
+          <Text
+            style={[
+              style.button_text,
+              { color: "rgba(39,108,186, 0.8)", fontWeight: "bold" },
+            ]}
+          >
+            Save
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -158,30 +255,31 @@ export default function Create_reminder() {
 
 const style = StyleSheet.create({
   input_text: {
-    paddingTop: 10,
-    paddingBottom: 20,
-    paddingLeft: 10,
+    borderBottomWidth: 2,
+    padding: 5,
+    marginBottom: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    fontSize: 20,
   },
   display_time: {
-    borderBottomColor: "gray",
-    borderTopColor: "gray",
-    borderBottomWidth: 3,
-    borderTopWidth: 3,
-    marginHorizontal: 60,
-    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
     paddingBottom: 10,
     paddingTop: 10,
   },
   display_text: {
-    fontSize: 50,
-    marginHorizontal: 20,
+    fontSize: 45,
   },
   button: {
     backgroundColor: "transparent",
   },
   button_text: {
     fontSize: 20,
-    color: "gray",
+  },
+  text_input: {
+    marginLeft: 20,
+    marginRight: 20,
+    fontWeight: "bold",
   },
 });

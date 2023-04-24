@@ -1,9 +1,12 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Text, Pressable } from "react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const ReminderSlice = (props) => {
   const date = new Date(props.data.reminder.date);
   const title = props.data.reminder.title;
+  const description = props.data.reminder.description;
+
   const Format_date = (date) => {
     const month = [
       "Jan",
@@ -28,18 +31,27 @@ const ReminderSlice = (props) => {
   return (
     <View style={{ flexDirection: "row", paddingLeft: 30, padding: 10 }}>
       <View style={{ borderWidth: 1, borderStyle: "solid" }}></View>
-      <View>
-        <Text style={{ fontSize: 20 }}> {title} </Text>
-        <Text> {Format_date(date)} </Text>
+      <View style={{ flexDirection: "column", width: 280 }}>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "bold",
+            paddingRight: 10,
+            paddingLeft: 5,
+          }}
+        >
+          {title}
+        </Text>
+        <Text style={{ color: "gray", paddingRight: 10, paddingLeft: 5 }}>
+          {description}
+        </Text>
+        <Text style={{ color: "gray" }}> {Format_date(date)} </Text>
       </View>
       <View
         style={{
-          // position: "relative",
-          // top: 10,
-          // position: "relative",
           display: "flex",
           justifyContent: "center",
-          paddingLeft: 80,
+          paddingLeft: 10,
         }}
       >
         <Pressable
@@ -48,7 +60,11 @@ const ReminderSlice = (props) => {
             props.deleteChange(props.data);
           }}
         >
-          <Text>MARK AS DONE</Text>
+          <MaterialIcons
+            name="done"
+            size={40}
+            color={"rgba(39,108,186, 0.8)"}
+          ></MaterialIcons>
         </Pressable>
       </View>
     </View>
@@ -60,10 +76,8 @@ export default ReminderSlice;
 const style = StyleSheet.create({
   button: {
     position: "relative",
-    borderRadius: 5,
-    borderWidth: 1,
-    backgroundColor: "red",
     justifyContent: "center",
+    alignItems: "center",
     padding: 5,
   },
 });

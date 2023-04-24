@@ -10,6 +10,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import {
   useNavigation,
@@ -17,14 +18,14 @@ import {
   useIsFocused,
 } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useLayoutEffect } from "react";
-import { LineChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text, ReminderSlice, ReminderView } from "../components";
-import settings from "../settings";
 import { client, messageHandler } from "../utils/mqtt";
 import { ScrollView } from "react-native-gesture-handler";
+import { store } from "../store";
 
 export default function Reminder() {
   const [today, setToday] = useState([]);
@@ -37,7 +38,10 @@ export default function Reminder() {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    fetch("http://192.168.1.2:3000/reminder", { method: "GET" })
+    fetch(
+      "http://192.168.1.2:3000/reminder/" + store.getState().user.ObjectID,
+      { method: "GET" }
+    )
       .then((res) => {
         return res.json();
       })
@@ -101,27 +105,32 @@ export default function Reminder() {
       },
     });
   });
-  // console.log(reminder);
-  // useEffect(() => {
-  //   if (reminder) {
-  //     const id = data.length + 1;
-  //     let reminderCopy = { ...reminder, _id: { id } };
-  //     let dataCopy = [...data, reminder];
-  //     console.log(dataCopy);
-  //     setData(dataCopy);
-  //   }
-  // }, [reminder]);
 
   return (
     <View>
-      <Button
-        title="Create new reminder"
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          borderRadius: 30,
+          backgroundColor: theme.colors.base,
+          alignItems: "center",
+          justifyContent: "center",
+          top: Dimensions.get("window").height - 175,
+          width: 60,
+          height: 60,
+          right: 25,
+        }}
         onPress={() => {
           navigation.navigate("Create-reminder", {
             name: "create_reminder",
           });
         }}
-      ></Button>
+      >
+        <MaterialIcons
+          name="add"
+          style={{ fontSize: 40, color: "white" }}
+        ></MaterialIcons>
+      </TouchableOpacity>
       <ScrollView>
         <ReminderView
           show={true}

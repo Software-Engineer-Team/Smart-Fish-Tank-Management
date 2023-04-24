@@ -17,10 +17,6 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { setUser, store } from "../store";
 import { useDispatch } from "react-redux";
 
-import { Dimensions } from "react-native";
-
-const screenHeight = Dimensions.get("window").height;
-
 export default function Login() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -30,8 +26,8 @@ export default function Login() {
     });
   });
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState({ clicked: false, data: "" });
+  const [password, setPassword] = useState({ clicked: false, data: "" });
   const [loading, setLoading] = useState(false);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
@@ -49,8 +45,8 @@ export default function Login() {
   const LoginHandler = () => {
     setLoading(true);
     const user = {
-      username: username,
-      password: password,
+      username: username.data,
+      password: password.data,
     };
     fetch("http://192.168.1.2:3000/login", {
       method: "POST",
@@ -67,18 +63,29 @@ export default function Login() {
         if (result.message == "Not found") {
           AlertLogin();
         } else {
-          dispatch(
-            setUser({
-              username: result.user.username,
-              ada_key: result.user.ada_key,
-              name: result.user.name,
-            })
-          );
-          navigation.navigate("Dashboard", { name: "Dashboard" });
+          if (result.message == "Wrong username or passowrd") AlertLogin();
+          else {
+            dispatch(
+              setUser({
+                username: result.user.username,
+                ada_key: result.user.ada_key,
+                name: result.user.name,
+                ObjectID: result.user._id,
+              })
+            );
+            navigation.navigate("Dashboard", { name: "Dashboard" });
+          }
         }
         console.log(result);
       })
       .catch((err) => console.log(err));
+  };
+  const getBorderColor = (data) => {
+    if (data.clicked) {
+      return "rgba(39,108,186, 0.8)";
+    } else {
+      return "grey";
+    }
   };
   return (
     <View style={style.general}>
@@ -95,24 +102,55 @@ export default function Login() {
       </View>
 
       <TextInput
-        style={style.Input_user}
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        style={[
+          style.Input_user,
+          { borderBottomColor: getBorderColor(username) },
+        ]}
+        value={username.data}
+        onChangeText={(text) =>
+          setUsername((previousState) => {
+            return { ...previousState, data: text };
+          })
+        }
         placeholder="Username"
+        onBlur={() => {
+          setUsername((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+        onFocus={() => {
+          setUsername((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
       ></TextInput>
       <View
         style={{
           flexDirection: "row",
           borderBottomWidth: 2,
-          borderBottomColor: "rgba(39,108,186, 0.8)",
+          borderBottomColor: getBorderColor(password),
           marginBottom: 15,
         }}
       >
         <TextInput
           style={style.Input_pass}
           value={password}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) =>
+            setPassword((previousState) => {
+              return { ...previousState, data: text };
+            })
+          }
           placeholder="Password"
+          onBlur={() => {
+            setPassword((previousState) => {
+              return { ...previousState, clicked: !previousState.clicked };
+            });
+          }}
+          onFocus={() => {
+            setPassword((previousState) => {
+              return { ...previousState, clicked: !previousState.clicked };
+            });
+          }}
           secureTextEntry={passwordVisibility}
         ></TextInput>
         <Pressable
@@ -156,14 +194,12 @@ export default function Login() {
 const style = StyleSheet.create({
   general: {
     padding: 40,
-    // top: screenHeight / 3 - 50,
     flex: 1,
     justifyContent: "center",
     textAlign: "center",
   },
   Input_user: {
     borderBottomWidth: 2,
-    borderBottomColor: "rgba(39,108,186, 0.8)",
     padding: 5,
     marginBottom: 15,
     fontSize: 20,

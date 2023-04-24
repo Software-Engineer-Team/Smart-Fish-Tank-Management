@@ -25,10 +25,10 @@ export default function Register() {
     });
   });
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [sepassword, setsePassword] = useState("");
-  const [ada_key, setAda_key] = useState("");
+  const [username, setUsername] = useState({ clicked: false, data: "" });
+  const [password, setPassword] = useState({ clicked: false, data: "" });
+  const [sepassword, setsePassword] = useState({ clicked: false, data: "" });
+  const [ada_key, setAda_key] = useState({ clicked: false, data: "" });
   const [loading, setLoading] = useState(false);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
@@ -62,15 +62,42 @@ export default function Register() {
       },
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
+  const AlertUsername = () =>
+    Alert.alert("Register", "User is empty", [
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+  const AlertPassword = () =>
+    Alert.alert("Register", "Password is empty", [
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+  const AlertAPI = () =>
+    Alert.alert("Register", "APi key is empty", [
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
 
   const RegisterHandler = () => {
     setLoading(true);
+    if (username.data.trim().length === 0) {
+      setLoading(false);
+      AlertUsername();
+      return;
+    }
+    if (password.data.trim().length === 0) {
+      setLoading(false);
+      AlertPassword();
+      return;
+    }
+    if (ada_key.data.trim().length === 0) {
+      setLoading(false);
+      AlertAPI();
+      return;
+    }
     const user = {
-      username: username,
-      password: password,
-      ada_key: ada_key,
+      username: username.data,
+      password: password.data,
+      ada_key: ada_key.data,
     };
-    if (password !== sepassword) {
+    if (password.data !== sepassword.data) {
       setLoading(false);
       AlertMismatch();
     } else {
@@ -90,19 +117,18 @@ export default function Register() {
             AlertRegisterFail();
           } else {
             AlertRegisterSuccess();
-
-            // dispatch(
-            //   setUser({
-            //     username: result.user.username,
-            //     ada_key: result.user.ada_key,
-            //     name: result.user.name,
-            //   })
-            // );
             navigation.navigate("Login", { name: "Login" });
           }
           console.log(result);
         })
         .catch((err) => console.log(err));
+    }
+  };
+  const getBorderColor = (data) => {
+    if (data.clicked) {
+      return "rgba(39,108,186, 0.8)";
+    } else {
+      return "grey";
     }
   };
   return (
@@ -120,24 +146,55 @@ export default function Register() {
       </View>
 
       <TextInput
-        style={style.Input_user}
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        style={[
+          style.Input_user,
+          { borderBottomColor: getBorderColor(username) },
+        ]}
+        value={username.data}
+        onChangeText={(text) =>
+          setUsername((previousState) => {
+            return { ...previousState, data: text };
+          })
+        }
         placeholder="Username"
+        onBlur={() => {
+          setUsername((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+        onFocus={() => {
+          setUsername((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
       ></TextInput>
       <View
         style={{
           flexDirection: "row",
           borderBottomWidth: 2,
-          borderBottomColor: "rgba(39,108,186, 0.8)",
+          borderBottomColor: getBorderColor(password),
           marginBottom: 15,
         }}
       >
         <TextInput
           style={style.Input_pass}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
+          value={password.data}
+          onChangeText={(text) =>
+            setPassword((previousState) => {
+              return { ...previousState, data: text };
+            })
+          }
           placeholder="Password"
+          onBlur={() => {
+            setPassword((previousState) => {
+              return { ...previousState, clicked: !previousState.clicked };
+            });
+          }}
+          onFocus={() => {
+            setPassword((previousState) => {
+              return { ...previousState, clicked: !previousState.clicked };
+            });
+          }}
           secureTextEntry={passwordVisibility}
         ></TextInput>
         <Pressable
@@ -155,15 +212,29 @@ export default function Register() {
         style={{
           flexDirection: "row",
           borderBottomWidth: 2,
-          borderBottomColor: "rgba(39,108,186, 0.8)",
+          borderBottomColor: getBorderColor(sepassword),
           marginBottom: 15,
         }}
       >
         <TextInput
           style={style.Input_pass}
-          value={sepassword}
-          onChangeText={(text) => setsePassword(text)}
+          value={sepassword.data}
+          onChangeText={(text) =>
+            setsePassword((previousState) => {
+              return { ...previousState, data: text };
+            })
+          }
           placeholder="Confirm Password"
+          onBlur={() => {
+            setsePassword((previousState) => {
+              return { ...previousState, clicked: !previousState.clicked };
+            });
+          }}
+          onFocus={() => {
+            setsePassword((previousState) => {
+              return { ...previousState, clicked: !previousState.clicked };
+            });
+          }}
           secureTextEntry={passwordVisibility}
         ></TextInput>
         <Pressable
@@ -178,10 +249,27 @@ export default function Register() {
         </Pressable>
       </View>
       <TextInput
-        style={style.Input_user}
-        value={ada_key}
-        onChangeText={(text) => setAda_key(text)}
+        style={[
+          style.Input_user,
+          { borderBottomColor: getBorderColor(ada_key) },
+        ]}
+        value={ada_key.data}
+        onChangeText={(text) =>
+          setAda_key((previousState) => {
+            return { ...previousState, data: text };
+          })
+        }
         placeholder="API Key"
+        onBlur={() => {
+          setAda_key((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
+        onFocus={() => {
+          setAda_key((previousState) => {
+            return { ...previousState, clicked: !previousState.clicked };
+          });
+        }}
       ></TextInput>
       <TouchableOpacity style={style.button} onPress={RegisterHandler}>
         <Text style={style.text_button}>Register</Text>
@@ -220,7 +308,6 @@ const style = StyleSheet.create({
   },
   Input_user: {
     borderBottomWidth: 2,
-    borderBottomColor: "rgba(39,108,186, 0.8)",
     padding: 5,
     marginBottom: 15,
     fontSize: 20,

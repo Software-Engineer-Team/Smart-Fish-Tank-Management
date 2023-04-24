@@ -15,6 +15,7 @@ import {
 } from "@env";
 import { useEffect } from "react";
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
+import { store } from "../store";
 
 // import { LineChart, Grid } from "react-native-svg-charts";
 // import {
