@@ -3,6 +3,7 @@ import {
   REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
   REACT_NATIVE_APP_X_AIO_USERNAME,
   REACT_NATIVE_APP_X_AIO_KEY,
+  REACT_NATIVE_APP_ENDPOINT_SERVER1,
 } from "@env";
 import {
   Button,
@@ -39,7 +40,8 @@ export default function Reminder() {
 
   useEffect(() => {
     fetch(
-      "http://192.168.1.2:3000/reminder/" + store.getState().user.ObjectID,
+      `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/reminder/` +
+        store.getState().user.ObjectID,
       { method: "GET" }
     )
       .then((res) => {
@@ -56,10 +58,12 @@ export default function Reminder() {
   }, [isFocused]);
   const MarkasDone = (data) => {
     // console.log(data);
-
-    fetch("http://192.168.1.2:3000/reminder/" + data.reminder._id, {
-      method: "DELETE",
-    })
+    fetch(
+      `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/reminder/` + data.reminder._id,
+      {
+        method: "DELETE",
+      }
+    )
       .then((res) => {
         return res.json();
       })

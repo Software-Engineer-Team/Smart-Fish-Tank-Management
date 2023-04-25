@@ -10,7 +10,6 @@ const userSlice = createSlice({
   },
   reducers: {
     setUser(state, action) {
-      console.log(state);
       state.name = action.payload.name;
       state.ada_key = action.payload.ada_key;
       state.username = action.payload.username;

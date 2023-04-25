@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-
+import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import {
   StyleSheet,
   View,
@@ -101,7 +101,7 @@ export default function Register() {
       setLoading(false);
       AlertMismatch();
     } else {
-      fetch("http://192.168.1.2:3000/register", {
+      fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/register`, {
         method: "POST",
         body: JSON.stringify(user),
         headers: {

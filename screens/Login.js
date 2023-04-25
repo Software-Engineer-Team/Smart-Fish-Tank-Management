@@ -8,6 +8,7 @@ import {
   Pressable,
   Alert,
 } from "react-native";
+import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import { TextInput } from "react-native-gesture-handler";
 import { Block, Text, PanSlider } from "../components";
 import { useNavigation } from "@react-navigation/native";
@@ -48,7 +49,8 @@ export default function Login() {
       username: username.data,
       password: password.data,
     };
-    fetch("http://192.168.1.2:3000/login", {
+    console.log(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/login`);
+    fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/login`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
@@ -134,7 +136,7 @@ export default function Login() {
       >
         <TextInput
           style={style.Input_pass}
-          value={password}
+          value={password.data}
           onChangeText={(text) =>
             setPassword((previousState) => {
               return { ...previousState, data: text };

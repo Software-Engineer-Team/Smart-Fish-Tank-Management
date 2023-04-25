@@ -12,6 +12,7 @@ import {
   REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
   REACT_NATIVE_APP_X_AIO_USERNAME,
   REACT_NATIVE_APP_X_AIO_KEY,
+  REACT_NATIVE_APP_ENDPOINT_SERVER1,
 } from "@env";
 import { useEffect } from "react";
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
@@ -76,12 +77,12 @@ export default function Temperature() {
     ],
     datasets: [
       {
-        data: [15], //highest graph value
-        withDots: false, //a flage to make it hidden
+        data: [15],
+        withDots: false,
       },
       {
-        data: [50], //highest graph value
-        withDots: false, //a flage to make it hidden
+        data: [50],
+        withDots: false,
       },
     ],
   });
@@ -150,19 +151,19 @@ export default function Temperature() {
               },
             },
             {
-              data: [15], //highest graph value
-              withDots: false, //a flage to make it hidden
+              data: [15],
+              withDots: false,
             },
             {
-              data: [50], //highest graph value
-              withDots: false, //a flage to make it hidden
+              data: [50],
+              withDots: false,
             },
           ],
         });
       })
       .catch((err) => console.log(err));
   }, []);
-  // const name = navigation.getParam("name");
+
   const Icon = settings[name].icon;
   const Icon1 = settings["temperatureCelsius"].icon;
   console.log(value);
@@ -240,19 +241,6 @@ export default function Temperature() {
           );
         }}
       />
-      {/* <LineChart
-        style={{ height: 200 }}
-        data={data}
-        contentInset={{ top: 20, bottom: 20 }}
-        svg={{
-          strokeWidth: 2,
-          // stroke: "url(#gradient)",
-          fill: "rgba(134, 65, 244, 0.8)",
-        }}
-        curve={shape.curveNatural}
-        yMin={20}
-        yMax={50}
-      ></LineChart> */}
     </Block>
   );
 }

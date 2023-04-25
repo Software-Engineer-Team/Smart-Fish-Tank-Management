@@ -14,6 +14,7 @@ import { Text } from "../components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "react-native-gesture-handler";
 import { store } from "../store";
+import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 
 export default function Create_reminder() {
   const {
@@ -221,7 +222,7 @@ export default function Create_reminder() {
               date: dateStore,
             };
             console.log(newReminder);
-            fetch("http://192.168.1.2:3000/reminder", {
+            fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/reminder`, {
               method: "POST",
               body: JSON.stringify(newReminder),
               headers: {
