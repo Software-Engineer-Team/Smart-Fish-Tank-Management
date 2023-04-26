@@ -20,6 +20,7 @@
     "expo": "~48.0.5",
     "expo-status-bar": "~1.4.4",
     "global": "^4.4.0",
+    "moment": "^2.29.4",
     "precompiled-mqtt": "^4.3.14-beta",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

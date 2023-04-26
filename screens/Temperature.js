@@ -133,8 +133,8 @@ export default function Temperature() {
         return res.json();
       })
       .then((res) => {
-        label = [];
-        tempArr = [];
+        let label = [];
+        let tempArr = [];
         for (let i = 0; i < Math.min(20, res.length); i++) {
           label.push(`${i}`);
           tempArr.push(parseInt(res[i]["value"]));
