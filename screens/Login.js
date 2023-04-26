@@ -62,10 +62,10 @@ export default function Login() {
       })
       .then((result) => {
         setLoading(false);
-        if (result.message == "Not found") {
+        if (result.message === "Not found") {
           AlertLogin();
         } else {
-          if (result.message == "Wrong username or passowrd") AlertLogin();
+          if (result.message === "Wrong username or passowrd") AlertLogin();
           else {
             dispatch(
               setUser({

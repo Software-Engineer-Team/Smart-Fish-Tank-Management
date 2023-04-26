@@ -27,6 +27,17 @@ export default {
       />
     ),
   },
+  statistics: {
+    name: "Statistics",
+    icon: ({ size, color, ...props }) => (
+      <MaterialCommunityIcons
+        size={size || theme.sizes.font}
+        color={color || theme.colors.base}
+        name="chart-areaspline"
+        {...props}
+      />
+    ),
+  },
   temperatureCelsius: {
     name: "Temperature",
     icon: ({ size, color, ...props }) => (

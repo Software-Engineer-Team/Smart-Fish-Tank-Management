@@ -13,7 +13,7 @@ import * as theme from "../theme";
 const ReminderView = (props) => {
   const [show, setShow] = useState(true);
   return (
-    <View>
+    <View style={style.container}>
       <View style={{ flexDirection: "row" }}>
         <Text
           style={{
@@ -70,6 +70,9 @@ const ReminderView = (props) => {
 export default ReminderView;
 
 const style = StyleSheet.create({
+  container: {
+    marginTop: 10,
+  },
   button: {
     position: "relative",
     borderRadius: 5,

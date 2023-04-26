@@ -86,7 +86,6 @@ export default function Temperature() {
       },
     ],
   });
-  console.log(temp);
   const horizontalLine = {
     y: 120, // Y-coordinate of the horizontal line
     color: "grey", // Color of the horizontal line
@@ -167,6 +166,7 @@ export default function Temperature() {
   const Icon = settings[name].icon;
   const Icon1 = settings["temperatureCelsius"].icon;
   console.log(value);
+  console.log(temp);
   return (
     <Block flex={1} style={styles.settings}>
       <Block flex={0.5} row>

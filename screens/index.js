@@ -2,6 +2,7 @@ import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import Temperature from "./Temperature";
 import LightSettings from "./Light-Settings";
+import Statistics from "./Statistics";
 import Reminder from "./Reminder";
 import Create_reminder from "./Create_reminder";
 import Login from "./Login";
@@ -16,4 +17,5 @@ export {
   Create_reminder,
   Login,
   Register,
+  Statistics,
 };

@@ -9,16 +9,18 @@ import {
   Create_reminder,
   Login,
   Register,
+  Statistics,
 } from "../screens";
 
 export default function SmartFishTank() {
   const Stack = createStackNavigator();
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
+      {/* <Stack.Screen name="Login" component={Login} /> */}
+      {/* <Stack.Screen name="Register" component={Register} /> */}
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="Statistics" component={Statistics} />
       <Stack.Screen name="Temperature" component={Temperature} />
       <Stack.Screen name="Light-Settings" component={LightSettings} />
       <Stack.Screen name="Reminder" component={Reminder} />

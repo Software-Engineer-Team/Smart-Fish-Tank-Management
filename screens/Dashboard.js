@@ -4,7 +4,12 @@ import {
   REACT_NATIVE_APP_X_AIO_USERNAME,
   REACT_NATIVE_APP_X_AIO_KEY,
 } from "@env";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import { LineChart } from "react-native-svg-charts";
@@ -18,7 +23,8 @@ let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERN
 
 export default function Dashboard() {
   const LightIcon = settings.light.icon;
-  const ACIcon = settings.ac.icon;
+  // const ACIcon = settings.ac.icon;
+  const STATISTICSIcon = settings.statistics.icon;
   const TempIcon = settings.temperature.icon;
   const FanIcon = settings.fan.icon;
   const WiFiIcon = settings["wi-fi"].icon;
@@ -55,33 +61,23 @@ export default function Dashboard() {
   return (
     <Block style={styles.dashboard}>
       <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
-        <Block flex={1.5} row style={{ alignItems: "flex-end" }}>
-          <Text h1>{temp}</Text>
-          <Text
-            h1
-            size={34}
-            height={80}
-            weight="600"
-            spacing={0.1}
-            color={theme.colors.accent1}
-          >
-            °C
-          </Text>
-        </Block>
-        <Block flex={1} column>
-          <Text caption>Temperature</Text>
-          <LineChart
-            yMax={100}
-            yMin={0}
-            data={[0, 50, 20, 25, 15, 20, 55, 60]}
-            style={{ flex: 0.8 }}
-            curve={shape.curveNatural}
-            svg={{
-              stroke: theme.colors.accent,
-              strokeWidth: 2,
-            }}
-          />
-        </Block>
+        <ImageBackground
+          source={require("../assets/logo.png")}
+          resizeMode="contain"
+          style={{
+            height: 150,
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          imageStyle={{
+            top: -100,
+            left: 10,
+            width: 308,
+            height: 310,
+          }}
+        />
       </Block>
 
       <ScrollView
@@ -110,12 +106,14 @@ export default function Dashboard() {
 
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate("Settings", { name: "ac" })}
+              onPress={() =>
+                navigation.navigate("Statistics", { name: "statistics" })
+              }
             >
               <Block center middle style={styles.button}>
-                <ACIcon size={38} />
+                <STATISTICSIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["ac"].name}
+                  {settings["statistics"].name}
                 </Text>
               </Block>
             </TouchableOpacity>

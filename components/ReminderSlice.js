@@ -22,11 +22,9 @@ const ReminderSlice = (props) => {
       "Nov",
       "Dec",
     ];
-    return `${date.getDate()} ${
-      month[date.getMonth()]
-    } ${date.getFullYear()}, ${
-      date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-    }:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()} `;
+    return `${date.getDate()} ${month[date.getMonth()]
+      } ${date.getFullYear()}, ${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
+      }:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()} `;
   };
   return (
     <View style={{ flexDirection: "row", paddingLeft: 30, padding: 10 }}>
