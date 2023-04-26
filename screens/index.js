@@ -4,7 +4,7 @@ import Temperature from "./Temperature";
 import LightSettings from "./Light-Settings";
 import Statistics from "./Statistics";
 import Reminder from "./Reminder";
-import Create_reminder from "./Create_reminder";
+import CreateReminder from "./CreateReminder";
 import Login from "./Login";
 import Register from "./Register";
 import TemperatureSettings from "./Temperature-Settings";
@@ -15,7 +15,7 @@ export {
   LightSettings,
   Temperature,
   Reminder,
-  Create_reminder,
+  CreateReminder,
   Login,
   Register,
   Statistics,
