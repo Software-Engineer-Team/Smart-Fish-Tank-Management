@@ -127,7 +127,7 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Temperature", {
+                navigation.navigate("Temperature-Settings", {
                   name: "temperature",
                   value: temp,
                 })

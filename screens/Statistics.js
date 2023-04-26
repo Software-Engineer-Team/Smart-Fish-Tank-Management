@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Actions from "../components/Actions";
 import * as theme from "../theme";
 import { Readings } from "../components";
 import {
@@ -72,16 +73,22 @@ export default function Statistics() {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.body}>
-        <Readings
-          title="Temperature"
-          url={`${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`}
-          ysuffix="°C"
-        />
-        <Readings
-          title="Lighting"
-          url={`${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`}
-          ysuffix="%"
-        />
+        {show.readings ? (
+          <View>
+            <Readings
+              title="Temperature"
+              url={`${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`}
+              ysuffix="°C"
+            />
+            <Readings
+              title="Lighting"
+              url={`${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`}
+              ysuffix="%"
+            />
+          </View>
+        ) : (
+          <Actions />
+        )}
       </ScrollView>
     </View>
   );
