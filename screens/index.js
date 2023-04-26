@@ -7,6 +7,7 @@ import Reminder from "./Reminder";
 import Create_reminder from "./Create_reminder";
 import Login from "./Login";
 import Register from "./Register";
+import TemperatureSettings from "./Temperature-Settings";
 
 export {
   Dashboard,
@@ -18,4 +19,5 @@ export {
   Login,
   Register,
   Statistics,
+  TemperatureSettings,
 };

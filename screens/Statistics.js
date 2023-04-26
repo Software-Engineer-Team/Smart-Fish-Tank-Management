@@ -3,6 +3,7 @@ import React, { useLayoutEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Actions from "../components/Actions";
 import * as theme from "../theme";
 
 export default function Statistics() {
@@ -36,6 +37,7 @@ export default function Statistics() {
           <Text style={{ textAlign: "center" }}>Actions</Text>
         </TouchableOpacity>
       </View>
+      <Actions />
     </View>
   );
 }

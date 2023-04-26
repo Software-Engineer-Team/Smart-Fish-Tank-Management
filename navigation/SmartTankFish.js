@@ -10,6 +10,7 @@ import {
   Login,
   Register,
   Statistics,
+  TemperatureSettings,
 } from "../screens";
 
 export default function SmartFishTank() {
@@ -25,6 +26,10 @@ export default function SmartFishTank() {
       <Stack.Screen name="Light-Settings" component={LightSettings} />
       <Stack.Screen name="Reminder" component={Reminder} />
       <Stack.Screen name="Create-reminder" component={Create_reminder} />
+      <Stack.Screen
+        name="Temperature-Settings"
+        component={TemperatureSettings}
+      />
     </Stack.Navigator>
   );
 }
