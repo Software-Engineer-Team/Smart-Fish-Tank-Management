@@ -7,6 +7,8 @@ import Readings from "./Readings";
 import Title from "./Title";
 import CheckBoxField from "./ui/CheckBoxField";
 import Divider from "./ui/Divider";
+import FeedingSlice from "./FeedingSlice";
+import FeedingView from "./FeedingView";
 
 export {
   CheckBoxField,
@@ -18,4 +20,6 @@ export {
   ReminderView,
   Divider,
   Readings,
+  FeedingSlice,
+  FeedingView,
 };

@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
-  REACT_NATIVE_APP_X_AIO_USERNAME,
-  REACT_NATIVE_APP_X_AIO_KEY,
-  REACT_NATIVE_APP_ENDPOINT_SERVER1,
-} from "@env";
+import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import {
   Button,
   View,
@@ -21,75 +16,64 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useLayoutEffect } from "react";
+import { Text } from "react-native";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
-import { Block, Text, ReminderSlice, ReminderView } from "../components";
+import { Block } from "../components";
 import { client, messageHandler } from "../utils/mqtt";
 import { ScrollView } from "react-native-gesture-handler";
 import { store } from "../store";
+import { FeedingView } from "../components";
+import { Stack, FAB } from "@react-native-material/core";
 
-export default function Reminder() {
-  const [today, setToday] = useState([]);
-  const [other, setOther] = useState([]);
+export default function FeedingSetting() {
+  const [feed, setFeed] = useState([]);
+  const isFocused = useIsFocused();
 
   const {
     params: { name },
   } = useRoute();
 
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    fetch(
-      `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/reminder/` +
-        store.getState().user.ObjectID,
-      { method: "GET" }
-    )
+  const DeleteFeeding = (data) => {
+    const url = `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding/` + data._id;
+    console.log(url);
+    fetch(url, {
+      method: "DELETE",
+    })
       .then((res) => {
         return res.json();
       })
       .then((res) => {
-        // console.log(res);
-        setToday(res.today);
-        setOther(res.other);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [isFocused]);
-
-  const MarkasDone = (data) => {
-    fetch(
-      `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/reminder/` + data.reminder._id,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        // console.log(res);
-        if (data.section == "Today") {
-          let dataCopy = [...today];
-          const id = dataCopy.indexOf(data.reminder);
-          dataCopy.splice(id, 1);
-          setToday(dataCopy);
-        } else {
-          // console.log("Hello");
-          let dataCopy = [...other];
-          const id = dataCopy.indexOf(data.reminder);
-          dataCopy.splice(id, 1);
-
-          setOther(dataCopy);
-        }
+        console.log(res);
+        let dataCopy = [...feed];
+        const id = dataCopy.indexOf(data);
+        dataCopy.splice(id, 1);
+        setFeed(dataCopy);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  useEffect(() => {
+    fetch(
+      `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding/` +
+        "643bd5cada7a761f0332f5ce",
+      // store.getState().user.ObjectID,
+      { method: "GET" }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setFeed(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [isFocused]);
+
   const navigation = useNavigation();
-  // console.log(data);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({ onPress }) => (
@@ -126,8 +110,8 @@ export default function Reminder() {
           zIndex: 1,
         }}
         onPress={() => {
-          navigation.navigate("Create-reminder", {
-            name: "create_reminder",
+          navigation.navigate("Feeding", {
+            name: "Feeding",
           });
         }}
       >
@@ -136,20 +120,20 @@ export default function Reminder() {
           style={{ fontSize: 40, color: "white" }}
         ></MaterialIcons>
       </TouchableOpacity>
-      <ScrollView>
-        <ReminderView
-          show={true}
-          title="Today"
-          data={today}
-          deleteChange={MarkasDone}
-        ></ReminderView>
-        <ReminderView
-          show={true}
-          title={"Unfinished tasks"}
-          data={other}
-          deleteChange={MarkasDone}
-        ></ReminderView>
-      </ScrollView>
+
+      <Text
+        style={{
+          paddingTop: 5,
+          paddingLeft: 5,
+          fontSize: 20,
+          fontWeight: "bold",
+        }}
+      >
+        {" "}
+        Feeding time
+      </Text>
+
+      <FeedingView data={feed} deleteFeeding={DeleteFeeding}></FeedingView>
     </View>
   );
 }

@@ -8,6 +8,8 @@ import CreateReminder from "./CreateReminder";
 import Login from "./Login";
 import Register from "./Register";
 import TemperatureSettings from "./Temperature-Settings";
+import Feeding from "./Feeding";
+import FeedingSetting from "./FeedingSetting";
 
 export {
   Dashboard,
@@ -20,4 +22,6 @@ export {
   Register,
   Statistics,
   TemperatureSettings,
+  Feeding,
+  FeedingSetting,
 };

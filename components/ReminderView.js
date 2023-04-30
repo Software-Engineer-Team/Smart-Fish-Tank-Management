@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import ReminderSlice from "./ReminderSlice";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import * as theme from "../theme";
 
 const ReminderView = (props) => {
   const [show, setShow] = useState(true);
