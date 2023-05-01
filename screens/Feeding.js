@@ -187,9 +187,15 @@ export default function CreateFeeding() {
                   return res.json();
                 })
                 .then((result) => {
-                  navigation.navigate("Feeding-Setting", {
-                    name: "Feeding-Setting",
-                  });
+                  if (
+                    result.message === "Feeding have the same time with other!"
+                  ) {
+                    AlertTime();
+                  } else {
+                    navigation.navigate("Feeding-Setting", {
+                      name: "Feeding-Setting",
+                    });
+                  }
                 })
                 .catch((err) => console.log(err));
             }
