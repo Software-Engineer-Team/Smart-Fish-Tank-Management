@@ -27,7 +27,7 @@ export default function Dashboard() {
   const STATISTICSIcon = settings.statistics.icon;
   const TempIcon = settings.temperature.icon;
   const FanIcon = settings.fan.icon;
-  const WiFiIcon = settings["wi-fi"].icon;
+  const FeedingIcon = settings.feeding.icon;
   const ReminderIcon = settings.reminder.icon;
   const [temp, setTemp] = useState(0);
   const navigation = useNavigation();
@@ -161,12 +161,16 @@ export default function Dashboard() {
           >
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate("Settings", { name: "wi-fi" })}
+              onPress={() =>
+                navigation.navigate("Feeding-Setting", {
+                  name: "Feeding-Setting",
+                })
+              }
             >
               <Block center middle style={styles.button}>
-                <WiFiIcon size={38} />
+                <FeedingIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["wi-fi"].name}
+                  {settings["feeding"].name}
                 </Text>
               </Block>
             </TouchableOpacity>

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -20,7 +21,6 @@ export default function CreateFeeding() {
   const {
     params: { name, data },
   } = useRoute();
-  console.log(data);
   const arr_val = ["Low", "Low-medium", "Medium", "High-medium", "High"];
   const navigation = useNavigation();
   const [time, setTime] = useState({
@@ -61,7 +61,15 @@ export default function CreateFeeding() {
   const sliderChange = (value) => {
     setLevel(value);
   };
-
+  const AlertTime = () =>
+    Alert.alert("Feeding", "Time have already setting", [
+      // {
+      //   text: "Cancel",
+      //   onPress: () => console.log("Cancel Pressed"),
+      //   style: "cancel",
+      // },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
   const Change = (hour, minute) => {
     let date = new Date();
     date.setHours(hour, minute);
@@ -80,7 +88,8 @@ export default function CreateFeeding() {
           <Text>Choose time</Text>
         </Pressable>
         <Text style={style.display_text}>
-          {time.hour}:{time.minute}
+          {time.hour < 10 ? "0" + time.hour : time.hour}:
+          {time.minute < 10 ? "0" + time.minute : time.minute}
         </Text>
       </View>
       <Block row space="between">
@@ -133,12 +142,11 @@ export default function CreateFeeding() {
             if (data != undefined) {
               const newFeeding = {
                 id: data._id,
-                user_id: "643bd5cada7a761f0332f5ce",
+                user_id: store.getState().user.ObjectID,
                 hour: time.hour,
                 minute: time.minute,
                 level: level,
               };
-              console.log(data._id);
               fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding`, {
                 method: "PATCH",
                 body: JSON.stringify(newFeeding),
@@ -149,16 +157,25 @@ export default function CreateFeeding() {
                 .then((res) => {
                   return res.json();
                 })
-                .then((result) => console.log(result))
+                .then((result) => {
+                  if (
+                    result.message === "Feeding have the same time with other!"
+                  ) {
+                    AlertTime();
+                  } else {
+                    navigation.navigate("Feeding-Setting", {
+                      name: "Feeding-Setting",
+                    });
+                  }
+                })
                 .catch((err) => console.log(err));
             } else {
               const newFeeding = {
-                user_id: "643bd5cada7a761f0332f5ce",
+                user_id: store.getState().user.ObjectID,
                 hour: time.hour,
                 minute: time.minute,
                 level: level,
               };
-              console.log(newFeeding);
               fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding`, {
                 method: "POST",
                 body: JSON.stringify(newFeeding),
@@ -169,12 +186,13 @@ export default function CreateFeeding() {
                 .then((res) => {
                   return res.json();
                 })
-                .then((result) => console.log(result))
+                .then((result) => {
+                  navigation.navigate("Feeding-Setting", {
+                    name: "Feeding-Setting",
+                  });
+                })
                 .catch((err) => console.log(err));
             }
-            navigation.navigate("Feeding-Setting", {
-              name: "Feeding-Setting",
-            });
           }}
         >
           <Text

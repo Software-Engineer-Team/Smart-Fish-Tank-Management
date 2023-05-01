@@ -71,13 +71,13 @@ export default {
       />
     ),
   },
-  "wi-fi": {
-    name: "Wi-Fi",
+  feeding: {
+    name: "Feeding",
     icon: ({ size, color, ...props }) => (
-      <FontAwesome
+      <MaterialIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
-        name="wifi"
+        name="schedule"
         {...props}
       />
     ),

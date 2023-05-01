@@ -44,7 +44,6 @@ export default function FeedingSetting() {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
         let dataCopy = [...feed];
         const id = dataCopy.indexOf(data);
         dataCopy.splice(id, 1);
@@ -58,8 +57,7 @@ export default function FeedingSetting() {
   useEffect(() => {
     fetch(
       `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding/` +
-        "643bd5cada7a761f0332f5ce",
-      // store.getState().user.ObjectID,
+        store.getState().user.ObjectID,
       { method: "GET" }
     )
       .then((res) => {

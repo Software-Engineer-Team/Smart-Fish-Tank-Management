@@ -96,7 +96,13 @@ export default function Create_reminder() {
           <Text>Choose time</Text>
         </Pressable>
         <Text style={style.display_text}>
-          {time.data.getHours()}:{time.data.getMinutes()}
+          {time.data.getHours() < 10
+            ? "0" + time.data.getHours()
+            : time.data.getHours()}
+          :
+          {time.data.getMinutes() < 10
+            ? "0" + time.data.getMinutes()
+            : time.data.getMinutes()}
         </Text>
       </View>
       <View style={style.display_time}>
@@ -110,8 +116,14 @@ export default function Create_reminder() {
           <Text>Choose date</Text>
         </Pressable>
         <Text style={style.display_text}>
-          {date.data.getDate()}/{date.data.getMonth() + 1}/
-          {date.data.getFullYear()}
+          {date.data.getDate() < 10
+            ? "0" + date.data.getDate()
+            : date.data.getDate()}
+          /
+          {date.data.getMonth() + 1 < 10
+            ? "0" + (date.data.getMonth() + 1)
+            : date.data.getMonth() + 1}
+          /{date.data.getFullYear()}
         </Text>
       </View>
       <Text style={[style.text_input, { color: getBorderColor(title) }]}>
@@ -232,12 +244,13 @@ export default function Create_reminder() {
               .then((res) => {
                 return res.json();
               })
-              .then((result) => console.log(result))
+              .then((result) => {
+                console.log(result);
+                navigation.navigate("Reminder", {
+                  name: "Reminder",
+                });
+              })
               .catch((err) => console.log(err));
-
-            navigation.navigate("Reminder", {
-              name: "Reminder",
-            });
           }}
         >
           <Text

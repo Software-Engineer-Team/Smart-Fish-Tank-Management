@@ -30,7 +30,7 @@ const FeedingSlice = (props) => {
             fontWeight: "bold",
           }}
         >
-          {hour}:{minute}
+          {hour < 10 ? "0" + hour : hour}:{minute < 10 ? "0" + minute : minute}
         </Text>
         <Text style={{ color: "gray" }}> Level: {arr_val[level]} </Text>
       </View>
