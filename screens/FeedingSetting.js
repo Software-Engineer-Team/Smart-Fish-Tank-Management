@@ -21,10 +21,8 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block } from "../components";
 import { client, messageHandler } from "../utils/mqtt";
-import { ScrollView } from "react-native-gesture-handler";
 import { store } from "../store";
 import { FeedingView } from "../components";
-import { Stack, FAB } from "@react-native-material/core";
 
 export default function FeedingSetting() {
   const [feed, setFeed] = useState([]);

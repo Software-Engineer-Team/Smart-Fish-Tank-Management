@@ -84,7 +84,6 @@ export default function Login() {
               setUser({
                 username: result.user.username,
                 ada_key: result.user.ada_key,
-                name: result.user.name,
                 ObjectID: result.user._id,
               })
             );

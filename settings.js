@@ -60,13 +60,13 @@ export default {
       />
     ),
   },
-  fan: {
-    name: "Fan",
+  profile: {
+    name: "Profile",
     icon: ({ size, color, ...props }) => (
-      <MaterialCommunityIcons
+      <MaterialIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
-        name="fan"
+        name="person"
         {...props}
       />
     ),

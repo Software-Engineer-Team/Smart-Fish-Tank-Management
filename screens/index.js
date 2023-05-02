@@ -10,6 +10,7 @@ import Register from "./Register";
 import TemperatureSettings from "./Temperature-Settings";
 import Feeding from "./Feeding";
 import FeedingSetting from "./FeedingSetting";
+import Profile from "./Profile";
 
 export {
   Dashboard,
@@ -24,4 +25,5 @@ export {
   TemperatureSettings,
   Feeding,
   FeedingSetting,
+  Profile,
 };

@@ -13,6 +13,7 @@ import {
   TemperatureSettings,
   Feeding,
   FeedingSetting,
+  Profile,
 } from "../screens";
 
 export default function SmartFishTank() {
@@ -34,6 +35,7 @@ export default function SmartFishTank() {
         name="Temperature-Settings"
         component={TemperatureSettings}
       />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 }

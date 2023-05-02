@@ -32,7 +32,7 @@ export default function Dashboard() {
   // const ACIcon = settings.ac.icon;
   const STATISTICSIcon = settings.statistics.icon;
   const TempIcon = settings.temperature.icon;
-  const FanIcon = settings.fan.icon;
+  const ProfileIcon = settings.profile.icon;
   const FeedingIcon = settings.feeding.icon;
   const ReminderIcon = settings.reminder.icon;
   const [temp, setTemp] = useState(0);
@@ -80,12 +80,12 @@ export default function Dashboard() {
   return (
     <Block style={styles.dashboard}>
       <View style={styles.logout}>
-        <Pressable onPress={Logouthandler}>
+        <TouchableOpacity onPress={Logouthandler}>
           <MaterialIcons
             name="power-settings-new"
             style={{ fontSize: 40, color: "red" }}
           ></MaterialIcons>
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
         <ImageBackground
@@ -170,12 +170,14 @@ export default function Dashboard() {
 
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate("Settings", { name: "fan" })}
+              onPress={() =>
+                navigation.navigate("Profile", { name: "Profile" })
+              }
             >
               <Block center middle style={styles.button}>
-                <FanIcon size={38} />
+                <ProfileIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["fan"].name}
+                  {settings["profile"].name}
                 </Text>
               </Block>
             </TouchableOpacity>
