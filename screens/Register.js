@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import {
   StyleSheet,
@@ -6,10 +6,15 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  ImageBackground,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Block, Text, PanSlider } from "../components";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useTogglePasswordVisibility } from "../hook/useTogglePasswordVisibility";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -19,6 +24,7 @@ export default function Register() {
     params: { name },
   } = useRoute();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -32,7 +38,20 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
-
+  useEffect(() => {
+    setUsername((previousState) => {
+      return { ...previousState, data: "" };
+    });
+    setPassword((previousState) => {
+      return { ...previousState, data: "" };
+    });
+    setsePassword((previousState) => {
+      return { ...previousState, data: "" };
+    });
+    setAda_key((previousState) => {
+      return { ...previousState, data: "" };
+    });
+  }, [isFocused]);
   const AlertRegisterFail = () =>
     Alert.alert("Register", "Username have already registered", [
       {
@@ -133,6 +152,24 @@ export default function Register() {
   };
   return (
     <View style={style.general}>
+      <View>
+        <ImageBackground
+          source={require("../assets/logo.png")}
+          resizeMode="contain"
+          style={{
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          imageStyle={{
+            top: -200,
+            left: -70,
+            width: 200,
+            height: 200,
+          }}
+        />
+      </View>
       <Spinner
         //visibility of Overlay Loading Spinner
         visible={loading}

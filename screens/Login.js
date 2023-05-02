@@ -7,16 +7,19 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  ImageBackground,
 } from "react-native";
 import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import { TextInput } from "react-native-gesture-handler";
 import { Block, Text, PanSlider } from "../components";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useTogglePasswordVisibility } from "../hook/useTogglePasswordVisibility";
 import Spinner from "react-native-loading-spinner-overlay";
 import { setUser, store } from "../store";
 import { useDispatch } from "react-redux";
+import * as theme from "../theme";
+import { useEffect } from "react";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -27,12 +30,22 @@ export default function Login() {
     });
   });
 
+  const isFocused = useIsFocused();
+
   const [username, setUsername] = useState({ clicked: false, data: "" });
   const [password, setPassword] = useState({ clicked: false, data: "" });
   const [loading, setLoading] = useState(false);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 
+  useEffect(() => {
+    setUsername((previousState) => {
+      return { ...previousState, data: "" };
+    });
+    setPassword((previousState) => {
+      return { ...previousState, data: "" };
+    });
+  }, [isFocused]);
   const AlertLogin = () =>
     Alert.alert("Login", "User or password is wrong", [
       {
@@ -91,6 +104,24 @@ export default function Login() {
   };
   return (
     <View style={style.general}>
+      <View>
+        <ImageBackground
+          source={require("../assets/logo.png")}
+          resizeMode="contain"
+          style={{
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          imageStyle={{
+            top: -240,
+            left: -70,
+            width: 200,
+            height: 200,
+          }}
+        />
+      </View>
       <Spinner
         //visibility of Overlay Loading Spinner
         visible={loading}
@@ -197,6 +228,8 @@ const style = StyleSheet.create({
   general: {
     padding: 40,
     flex: 1,
+    // alignItems: "center",
+    flexDirection: "column",
     justifyContent: "center",
     textAlign: "center",
   },

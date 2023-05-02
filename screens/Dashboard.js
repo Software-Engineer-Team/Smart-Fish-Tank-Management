@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
@@ -19,6 +20,11 @@ import { Block, Text } from "../components";
 import settings from "../settings";
 import { socket } from "../utils/socketio";
 import { client, messageHandler } from "../utils/mqtt";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Pressable } from "react-native";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store";
+
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 
 export default function Dashboard() {
@@ -31,6 +37,7 @@ export default function Dashboard() {
   const ReminderIcon = settings.reminder.icon;
   const [temp, setTemp] = useState(0);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,8 +65,28 @@ export default function Dashboard() {
     };
   }, []);
 
+  const Logouthandler = () => {
+    dispatch(
+      setUser({
+        username: "",
+        ada_key: "",
+        name: "",
+        ObjectID: "",
+      })
+    );
+    navigation.navigate("Login");
+  };
+
   return (
     <Block style={styles.dashboard}>
+      <View style={styles.logout}>
+        <Pressable onPress={Logouthandler}>
+          <MaterialIcons
+            name="power-settings-new"
+            style={{ fontSize: 40, color: "red" }}
+          ></MaterialIcons>
+        </Pressable>
+      </View>
       <Block row style={{ paddingTop: 40, marginTop: theme.sizes.base * 2 }}>
         <ImageBackground
           source={require("../assets/logo.png")}
@@ -196,6 +223,13 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
+  logout: {
+    position: "absolute",
+    right: 20,
+    top: 40,
+    height: 40,
+    width: 40,
+  },
   dashboard: {
     flex: 1,
     padding: theme.sizes.base * 2,
