@@ -79,136 +79,283 @@ export default function Profile() {
     }
   };
   return (
-    <View style={styles.overview}>
-      <Modal animationType="fade" transparent={false} visible={showpassword}>
-        <View style={styles.general}>
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomWidth: 2,
-              borderBottomColor: getBorderColor(password),
-              marginBottom: 15,
-            }}
-          >
-            <TextInput
-              style={styles.Input_pass}
-              value={password.data}
-              onChangeText={(text) =>
-                setPassword((previousState) => {
-                  return { ...previousState, data: text };
-                })
-              }
-              placeholder="Password"
-              onBlur={() => {
-                setPassword((previousState) => {
-                  return { ...previousState, clicked: false };
-                });
-              }}
-              onFocus={() => {
-                setPassword((previousState) => {
-                  return { ...previousState, clicked: true };
-                });
-              }}
-              secureTextEntry={passwordVisibility}
-            ></TextInput>
-            <Pressable
+    <View>
+      <View style={styles.overview}>
+        <Modal animationType="fade" transparent={false} visible={showpassword}>
+          <View style={styles.general}>
+            <View
               style={{
-                position: "absolute",
-                right: 0,
-                paddingTop: 9,
+                flexDirection: "row",
+                borderBottomWidth: 2,
+                borderBottomColor: getBorderColor(password),
+                marginBottom: 15,
               }}
-              onPress={handlePasswordVisibility}
             >
-              <MaterialCommunityIcons
-                name={rightIcon}
-                size={22}
-                color="#232323"
-              />
-            </Pressable>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomWidth: 2,
-              borderBottomColor: getBorderColor(newpassword),
-              marginBottom: 15,
-            }}
-          >
-            <TextInput
-              style={styles.Input_pass}
-              value={newpassword.data}
-              onChangeText={(text) =>
-                setNewPassword((previousState) => {
-                  return { ...previousState, data: text };
-                })
-              }
-              placeholder="New Password"
-              onBlur={() => {
-                setNewPassword((previousState) => {
-                  return { ...previousState, clicked: false };
-                });
-              }}
-              onFocus={() => {
-                setNewPassword((previousState) => {
-                  return { ...previousState, clicked: true };
-                });
-              }}
-              secureTextEntry={passwordVisibility}
-            ></TextInput>
-            <Pressable
+              <TextInput
+                style={styles.Input_pass}
+                value={password.data}
+                onChangeText={(text) =>
+                  setPassword((previousState) => {
+                    return { ...previousState, data: text };
+                  })
+                }
+                placeholder="Password"
+                onBlur={() => {
+                  setPassword((previousState) => {
+                    return { ...previousState, clicked: false };
+                  });
+                }}
+                onFocus={() => {
+                  setPassword((previousState) => {
+                    return { ...previousState, clicked: true };
+                  });
+                }}
+                secureTextEntry={passwordVisibility}
+              ></TextInput>
+              <Pressable
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  paddingTop: 9,
+                }}
+                onPress={handlePasswordVisibility}
+              >
+                <MaterialCommunityIcons
+                  name={rightIcon}
+                  size={22}
+                  color="#232323"
+                />
+              </Pressable>
+            </View>
+            <View
               style={{
-                position: "absolute",
-                right: 0,
-                paddingTop: 9,
-              }}
-              onPress={handlePasswordVisibility}
-            >
-              <MaterialCommunityIcons
-                name={rightIcon}
-                size={22}
-                color="#232323"
-              />
-            </Pressable>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              paddingTop: 20,
-            }}
-          >
-            <Pressable
-              style={styles.button_handler}
-              onPress={() => {
-                setPassword((previousState) => {
-                  return { clicked: false, data: "" };
-                });
-                setNewPassword((previousState) => {
-                  return { clicked: false, data: "" };
-                });
-                setShowPassword(false);
+                flexDirection: "row",
+                borderBottomWidth: 2,
+                borderBottomColor: getBorderColor(newpassword),
+                marginBottom: 15,
               }}
             >
-              <Text style={[styles.button_text, { color: "gray" }]}>
-                Cancel
-              </Text>
-            </Pressable>
-            <Pressable
-              style={styles.button_handler}
-              onPress={() => {
-                if (password.data.length == 0) AlertAPI();
-                else {
-                  if (newpassword.data.length == 0) AlertPassword();
+              <TextInput
+                style={styles.Input_pass}
+                value={newpassword.data}
+                onChangeText={(text) =>
+                  setNewPassword((previousState) => {
+                    return { ...previousState, data: text };
+                  })
+                }
+                placeholder="New Password"
+                onBlur={() => {
+                  setNewPassword((previousState) => {
+                    return { ...previousState, clicked: false };
+                  });
+                }}
+                onFocus={() => {
+                  setNewPassword((previousState) => {
+                    return { ...previousState, clicked: true };
+                  });
+                }}
+                secureTextEntry={passwordVisibility}
+              ></TextInput>
+              <Pressable
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  paddingTop: 9,
+                }}
+                onPress={handlePasswordVisibility}
+              >
+                <MaterialCommunityIcons
+                  name={rightIcon}
+                  size={22}
+                  color="#232323"
+                />
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                paddingTop: 20,
+              }}
+            >
+              <Pressable
+                style={styles.button_handler}
+                onPress={() => {
+                  setPassword((previousState) => {
+                    return { clicked: false, data: "" };
+                  });
+                  setNewPassword((previousState) => {
+                    return { clicked: false, data: "" };
+                  });
+                  setShowPassword(false);
+                }}
+              >
+                <Text style={[styles.button_text, { color: "gray" }]}>
+                  Cancel
+                </Text>
+              </Pressable>
+              <Pressable
+                style={styles.button_handler}
+                onPress={() => {
+                  if (password.data.length == 0) AlertAPI();
                   else {
-                    if (password.data != newpassword.data) AlertMismatch();
+                    if (newpassword.data.length == 0) AlertPassword();
+                    else {
+                      if (password.data != newpassword.data) AlertMismatch();
+                      else {
+                        const data = {
+                          username: store.getState().user.username,
+                          password: password.data,
+                          newpassword: newpassword.data,
+                        };
+                        const url = `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/changepass`;
+                        console.log(url);
+                        fetch(url, {
+                          method: "PATCH",
+                          body: JSON.stringify(data),
+                          headers: {
+                            "Content-type": "application/json",
+                          },
+                        })
+                          .then((result) => {
+                            return result.json();
+                          })
+                          .then((result) => {
+                            if (result.message == "Wrong password!")
+                              AlerChange();
+                            else {
+                              AlerSuccess();
+                              setPassword((previousState) => {
+                                return { clicked: false, data: "" };
+                              });
+                              setNewPassword((previousState) => {
+                                return { clicked: false, data: "" };
+                              });
+                              setShowPassword(false);
+                            }
+                          });
+                      }
+                    }
+                  }
+                }}
+              >
+                <Text
+                  style={[
+                    styles.button_text,
+                    { color: "rgba(39,108,186, 0.8)", fontWeight: "bold" },
+                  ]}
+                >
+                  Save
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Modal animationType="fade" transparent={false} visible={showAPIKey}>
+          <View style={styles.general}>
+            <TextInput
+              style={[
+                styles.Input_user,
+                { borderBottomColor: getBorderColor(ada_key) },
+              ]}
+              value={ada_key.data}
+              onChangeText={(text) =>
+                setAda_key((previousState) => {
+                  return { ...previousState, data: text };
+                })
+              }
+              placeholder="API Key"
+              onBlur={() => {
+                setAda_key((previousState) => {
+                  return { ...previousState, clicked: false };
+                });
+              }}
+              onFocus={() => {
+                setAda_key((previousState) => {
+                  return { ...previousState, clicked: true };
+                });
+              }}
+            ></TextInput>
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 2,
+                borderBottomColor: getBorderColor(password),
+                marginBottom: 15,
+              }}
+            >
+              <TextInput
+                style={styles.Input_pass}
+                value={password.data}
+                onChangeText={(text) =>
+                  setPassword((previousState) => {
+                    return { ...previousState, data: text };
+                  })
+                }
+                placeholder="Password"
+                onBlur={() => {
+                  setPassword((previousState) => {
+                    return { ...previousState, clicked: false };
+                  });
+                }}
+                onFocus={() => {
+                  setPassword((previousState) => {
+                    return { ...previousState, clicked: true };
+                  });
+                }}
+                secureTextEntry={passwordVisibility}
+              ></TextInput>
+              <Pressable
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  paddingTop: 9,
+                }}
+                onPress={handlePasswordVisibility}
+              >
+                <MaterialCommunityIcons
+                  name={rightIcon}
+                  size={22}
+                  color="#232323"
+                />
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                paddingTop: 20,
+              }}
+            >
+              <Pressable
+                style={styles.button_handler}
+                onPress={() => {
+                  setPassword((previousState) => {
+                    return { clicked: false, data: "" };
+                  });
+                  setAda_key((previousState) => {
+                    return { clicked: false, data: "" };
+                  });
+                  setShowAPIKey(false);
+                }}
+              >
+                <Text style={[styles.button_text, { color: "gray" }]}>
+                  Cancel
+                </Text>
+              </Pressable>
+              <Pressable
+                style={styles.button_handler}
+                onPress={() => {
+                  if (ada_key.data.length == 0) AlertAPI();
+                  else {
+                    if (password.data.length == 0) AlertPassword();
                     else {
                       const data = {
                         username: store.getState().user.username,
                         password: password.data,
-                        newpassword: newpassword.data,
+                        ada_key: ada_key.data,
                       };
-                      const url = `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/changepass`;
-                      console.log(url);
+                      const url = `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/changeAPI`;
                       fetch(url, {
                         method: "PATCH",
                         body: JSON.stringify(data),
@@ -223,200 +370,56 @@ export default function Profile() {
                           if (result.message == "Wrong password!") AlerChange();
                           else {
                             AlerSuccess();
+                            dispatch(
+                              setUser({
+                                username: store.getState().user.username,
+                                ada_key: ada_key,
+                                name: store.getState().user.name,
+                                ObjectID: store.getState().user.ObjectID,
+                              })
+                            );
                             setPassword((previousState) => {
                               return { clicked: false, data: "" };
                             });
-                            setNewPassword((previousState) => {
+                            setAda_key((previousState) => {
                               return { clicked: false, data: "" };
                             });
-                            setShowPassword(false);
+                            setShowAPIKey(false);
                           }
                         });
                     }
                   }
-                }
-              }}
-            >
-              <Text
-                style={[
-                  styles.button_text,
-                  { color: "rgba(39,108,186, 0.8)", fontWeight: "bold" },
-                ]}
+                }}
               >
-                Save
-              </Text>
-            </Pressable>
+                <Text
+                  style={[
+                    styles.button_text,
+                    { color: "rgba(39,108,186, 0.8)", fontWeight: "bold" },
+                  ]}
+                >
+                  Save
+                </Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
-      <Modal animationType="fade" transparent={false} visible={showAPIKey}>
-        <View style={styles.general}>
-          <TextInput
-            style={[
-              styles.Input_user,
-              { borderBottomColor: getBorderColor(ada_key) },
-            ]}
-            value={ada_key.data}
-            onChangeText={(text) =>
-              setAda_key((previousState) => {
-                return { ...previousState, data: text };
-              })
-            }
-            placeholder="API Key"
-            onBlur={() => {
-              setAda_key((previousState) => {
-                return { ...previousState, clicked: false };
-              });
-            }}
-            onFocus={() => {
-              setAda_key((previousState) => {
-                return { ...previousState, clicked: true };
-              });
-            }}
-          ></TextInput>
-          <View
+        </Modal>
+        <View style={styles.container}>
+          <MaterialIcons
+            name="person"
             style={{
-              flexDirection: "row",
-              borderBottomWidth: 2,
-              borderBottomColor: getBorderColor(password),
-              marginBottom: 15,
+              fontSize: 200,
+              color: "black",
+              opacity: 0.6,
+              borderColor: "rgba(0,0,0,0.6)",
+              borderWidth: 1,
+              borderRadius: 100,
             }}
-          >
-            <TextInput
-              style={styles.Input_pass}
-              value={password.data}
-              onChangeText={(text) =>
-                setPassword((previousState) => {
-                  return { ...previousState, data: text };
-                })
-              }
-              placeholder="Password"
-              onBlur={() => {
-                setPassword((previousState) => {
-                  return { ...previousState, clicked: false };
-                });
-              }}
-              onFocus={() => {
-                setPassword((previousState) => {
-                  return { ...previousState, clicked: true };
-                });
-              }}
-              secureTextEntry={passwordVisibility}
-            ></TextInput>
-            <Pressable
-              style={{
-                position: "absolute",
-                right: 0,
-                paddingTop: 9,
-              }}
-              onPress={handlePasswordVisibility}
-            >
-              <MaterialCommunityIcons
-                name={rightIcon}
-                size={22}
-                color="#232323"
-              />
-            </Pressable>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              paddingTop: 20,
-            }}
-          >
-            <Pressable
-              style={styles.button_handler}
-              onPress={() => {
-                setPassword((previousState) => {
-                  return { clicked: false, data: "" };
-                });
-                setAda_key((previousState) => {
-                  return { clicked: false, data: "" };
-                });
-                setShowAPIKey(false);
-              }}
-            >
-              <Text style={[styles.button_text, { color: "gray" }]}>
-                Cancel
-              </Text>
-            </Pressable>
-            <Pressable
-              style={styles.button_handler}
-              onPress={() => {
-                if (ada_key.data.length == 0) AlertAPI();
-                else {
-                  if (password.data.length == 0) AlertPassword();
-                  else {
-                    const data = {
-                      username: store.getState().user.username,
-                      password: password.data,
-                      ada_key: ada_key.data,
-                    };
-                    const url = `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/changeAPI`;
-                    fetch(url, {
-                      method: "PATCH",
-                      body: JSON.stringify(data),
-                      headers: {
-                        "Content-type": "application/json",
-                      },
-                    })
-                      .then((result) => {
-                        return result.json();
-                      })
-                      .then((result) => {
-                        if (result.message == "Wrong password!") AlerChange();
-                        else {
-                          AlerSuccess();
-                          dispatch(
-                            setUser({
-                              username: store.getState().user.username,
-                              ada_key: ada_key,
-                              name: store.getState().user.name,
-                              ObjectID: store.getState().user.ObjectID,
-                            })
-                          );
-                          setPassword((previousState) => {
-                            return { clicked: false, data: "" };
-                          });
-                          setAda_key((previousState) => {
-                            return { clicked: false, data: "" };
-                          });
-                          setShowAPIKey(false);
-                        }
-                      });
-                  }
-                }
-              }}
-            >
-              <Text
-                style={[
-                  styles.button_text,
-                  { color: "rgba(39,108,186, 0.8)", fontWeight: "bold" },
-                ]}
-              >
-                Save
-              </Text>
-            </Pressable>
-          </View>
+          ></MaterialIcons>
+          <Text style={styles.label}> Username </Text>
+          <Text style={styles.content}> {store.getState().user.username} </Text>
+          <Text style={styles.label}> API Key </Text>
+          <Text style={styles.content}> {store.getState().user.ada_key} </Text>
         </View>
-      </Modal>
-      <View style={styles.container}>
-        <MaterialIcons
-          name="person"
-          style={{
-            fontSize: 200,
-            color: "black",
-            opacity: 0.6,
-            borderColor: "rgba(0,0,0,0.6)",
-            borderWidth: 1,
-            borderRadius: 100,
-          }}
-        ></MaterialIcons>
-        <Text style={styles.label}> Username </Text>
-        <Text style={styles.content}> {store.getState().user.username} </Text>
-        <Text style={styles.label}> API Key </Text>
-        <Text style={styles.content}> {store.getState().user.ada_key} </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -471,7 +474,8 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: 20,
+    height: 50,
   },
   textButton: {
     color: "white",
