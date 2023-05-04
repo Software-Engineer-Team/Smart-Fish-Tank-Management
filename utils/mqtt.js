@@ -3,7 +3,7 @@ import {
   REACT_NATIVE_APP_X_AIO_USERNAME,
   REACT_NATIVE_APP_X_AIO_KEY,
 } from "@env";
-import { socket } from "./socketio";
+// import { socket } from "./socketio";
 
 const URL = "wss://io.adafruit.com:443/mqtt/";
 const TOPICS = [`${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus`];
@@ -42,11 +42,11 @@ const messageHandler = (callBack) => {
     callBack(message.toString());
 
     if (lastTemp !== null && lastLight !== null) {
-      socket.emit("data", {
-        temp: lastTemp,
-        light: lastLight,
-        time: "11:00am",
-      });
+      // socket.emit("data", {
+      //   temp: lastTemp,
+      //   light: lastLight,
+      //   time: "11:00am",
+      // });
 
       lastTemp = null;
       lastLight = null;

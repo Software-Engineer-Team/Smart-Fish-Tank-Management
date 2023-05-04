@@ -108,16 +108,15 @@ export default function Login() {
           source={require("../assets/logo.png")}
           resizeMode="contain"
           style={{
-            position: "absolute",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
           imageStyle={{
-            top: -240,
-            left: -70,
-            width: 200,
-            height: 200,
+            top: -330,
+            left: -53,
+            width: 400,
+            height: 400,
           }}
         />
       </View>
@@ -227,10 +226,10 @@ const style = StyleSheet.create({
   general: {
     padding: 40,
     flex: 1,
-    // alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
     textAlign: "center",
+    marginTop: 130,
   },
   Input_user: {
     borderBottomWidth: 2,

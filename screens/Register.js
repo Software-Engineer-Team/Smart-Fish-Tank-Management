@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { Block, Text, PanSlider } from "../components";
+import { Text } from "../components";
 import {
   useNavigation,
   useRoute,
@@ -157,16 +157,15 @@ export default function Register() {
           source={require("../assets/logo.png")}
           resizeMode="contain"
           style={{
-            position: "absolute",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
           imageStyle={{
-            top: -200,
-            left: -70,
-            width: 200,
-            height: 200,
+            top: -330,
+            left: -53,
+            width: 400,
+            height: 400,
           }}
         />
       </View>
@@ -342,6 +341,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     textAlign: "center",
+    marginTop: 150,
   },
   Input_user: {
     borderBottomWidth: 2,

@@ -13,15 +13,12 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
-import { LineChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-import { socket } from "../utils/socketio";
 import { client, messageHandler } from "../utils/mqtt";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Pressable } from "react-native";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store";
 
@@ -60,7 +57,6 @@ export default function Dashboard() {
     messageHandler((message) => setTemp(message));
 
     return () => {
-      socket.off();
       client.end();
     };
   }, []);
