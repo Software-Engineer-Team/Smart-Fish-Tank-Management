@@ -68,7 +68,8 @@ export default function LightSettings() {
     console.log(TOPICS);
     client.publish(
       TOPICS[2],
-      "4-Turn on the light " + (value === true ? "automically" : "manually")
+      "4- Change the light to turn on/off " +
+        (value === true ? "automically" : "manually")
     );
   };
 

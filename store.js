@@ -28,7 +28,6 @@ const logSlice = createSlice({
     lamp: 0,
     fan: 0,
     heat: 0,
-    feedData: 0,
   },
   reducers: {
     setLog(state, action) {
@@ -39,7 +38,6 @@ const logSlice = createSlice({
       state.lamp = action.payload.lamp;
       state.fan = action.payload.fan;
       state.heat = action.payload.heat;
-      state.feedData = action.payload.feedData;
     },
     setLight(state, action) {
       state.light = action.payload.light;
