@@ -12,10 +12,12 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as theme from "../theme";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "react-native-gesture-handler";
-import { store } from "../store";
+import { setFeedData, store } from "../store";
 import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import Slider from "@react-native-community/slider";
 import { Block, Text } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { client, TOPICS } from "../utils/mqtt";
 
 export default function CreateFeeding() {
   const {
@@ -25,10 +27,15 @@ export default function CreateFeeding() {
   const navigation = useNavigation();
   const [time, setTime] = useState({
     show: false,
-    hour: data != undefined ? data.hour : new Date().getHours(),
-    minute: data != undefined ? data.minute : new Date().getMinutes(),
+    hour: data !== undefined ? data.hour : new Date().getHours(),
+    minute: data !== undefined ? data.minute : new Date().getMinutes(),
   });
-  const [level, setLevel] = useState(data != undefined ? data.level : 0);
+  const [level, setLevel] = useState(data !== undefined ? data.level : 0);
+
+  const { tempA, tempB, light_mode, light_unit, feedData } = useSelector(
+    (state) => state.cmd
+  );
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -74,6 +81,44 @@ export default function CreateFeeding() {
     let date = new Date();
     date.setHours(hour, minute);
     return date;
+  };
+
+  const saveButtonHandler = () => {
+    const feed_time = `${time.hour}.${time.minute}.${level}`;
+    const newFeeding = {
+      id: data ? data._id : undefined,
+      user_id: store.getState().user.ObjectID,
+      hour: time.hour,
+      minute: time.minute,
+      level: level,
+    };
+    fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding`, {
+      method: data ? "PATCH" : "POST",
+      body: JSON.stringify(newFeeding),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        if (result.message === "Feeding have the same time with other!") {
+          AlertTime();
+        } else {
+          console.log("TEST");
+          dispatch(setFeedData({ feedData: feedData + feed_time }));
+          client.publish(
+            TOPICS[1],
+            `${light_unit} ${light_mode === 0 ? "0" : "1"} ${tempA} ${tempB} ${feedData + feed_time
+            }`
+          );
+          navigation.navigate("Feeding-Setting", {
+            name: "Feeding-Setting",
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <View style={{ padding: 20 }}>
@@ -136,71 +181,7 @@ export default function CreateFeeding() {
         >
           <Text style={[style.button_text, { color: "gray" }]}>Cancel</Text>
         </Pressable>
-        <Pressable
-          style={style.button}
-          onPress={() => {
-            if (data != undefined) {
-              const newFeeding = {
-                id: data._id,
-                user_id: store.getState().user.ObjectID,
-                hour: time.hour,
-                minute: time.minute,
-                level: level,
-              };
-              fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding`, {
-                method: "PATCH",
-                body: JSON.stringify(newFeeding),
-                headers: {
-                  "Content-type": "application/json",
-                },
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((result) => {
-                  if (
-                    result.message === "Feeding have the same time with other!"
-                  ) {
-                    AlertTime();
-                  } else {
-                    navigation.navigate("Feeding-Setting", {
-                      name: "Feeding-Setting",
-                    });
-                  }
-                })
-                .catch((err) => console.log(err));
-            } else {
-              const newFeeding = {
-                user_id: store.getState().user.ObjectID,
-                hour: time.hour,
-                minute: time.minute,
-                level: level,
-              };
-              fetch(`${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding`, {
-                method: "POST",
-                body: JSON.stringify(newFeeding),
-                headers: {
-                  "Content-type": "application/json",
-                },
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((result) => {
-                  if (
-                    result.message === "Feeding have the same time with other!"
-                  ) {
-                    AlertTime();
-                  } else {
-                    navigation.navigate("Feeding-Setting", {
-                      name: "Feeding-Setting",
-                    });
-                  }
-                })
-                .catch((err) => console.log(err));
-            }
-          }}
-        >
+        <Pressable style={style.button} onPress={saveButtonHandler}>
           <Text
             style={[
               style.button_text,
@@ -228,7 +209,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 10,
-    paddingTop: 10,
+    paddingTop: 100,
   },
   display_text: {
     fontSize: 45,

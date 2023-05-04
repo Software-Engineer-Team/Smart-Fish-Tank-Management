@@ -21,16 +21,40 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block } from "../components";
 // import { client } from "../utils/mqtt";
-import { store } from "../store";
+import { store, setFeedData } from "../store";
 import { FeedingView } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { TOPICS, client } from "../utils/mqtt";
 
 export default function FeedingSetting() {
   const [feed, setFeed] = useState([]);
-  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  // const isFocused = useIsFocused();
+
+  const { tempA, tempB, light_mode, light_unit } = useSelector(
+    (state) => state.cmd
+  );
 
   const {
     params: { name },
   } = useRoute();
+
+  const getFeedData = (data) => {
+    const feed_data = [];
+    data.forEach((d) => {
+      const { hour, minute, level } = d;
+      feed_data.push(`${hour}.${minute}.${level}`);
+    });
+    console.log(feed_data.join("/"));
+    if (feed_data.length !== 0) {
+      dispatch(setFeedData({ feedData: feed_data.join("/") }));
+      client.publish(
+        TOPICS[1],
+        `${light_unit} ${light_mode === 0 ? "0" : "1"
+        } ${tempA} ${tempB} ${feed_data.join("/")}`
+      );
+    }
+  };
 
   const DeleteFeeding = (data) => {
     const url = `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding/` + data._id;
@@ -45,6 +69,7 @@ export default function FeedingSetting() {
         let dataCopy = [...feed];
         const id = dataCopy.indexOf(data);
         dataCopy.splice(id, 1);
+        getFeedData(dataCopy);
         setFeed(dataCopy);
       })
       .catch((err) => {
@@ -62,12 +87,13 @@ export default function FeedingSetting() {
         return res.json();
       })
       .then((res) => {
+        getFeedData(res.data);
         setFeed(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [isFocused]);
+  }, []);
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
