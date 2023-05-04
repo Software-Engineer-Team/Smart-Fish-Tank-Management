@@ -28,7 +28,7 @@ const logSlice = createSlice({
     lamp: 0,
     fan: 0,
     heat: 0,
-    feed: 0,
+    feedData: 0,
   },
   reducers: {
     setLog(state, action) {
@@ -39,7 +39,7 @@ const logSlice = createSlice({
       state.lamp = action.payload.lamp;
       state.fan = action.payload.fan;
       state.heat = action.payload.heat;
-      state.feed = action.payload.feed;
+      state.feedData = action.payload.feedData;
     },
     setLight(state, action) {
       state.light = action.payload.light;
@@ -56,7 +56,7 @@ const cmdSlice = createSlice({
     light_mode: 0,
     tempA: 0,
     tempB: 0,
-    feed: "0.0.0", // hour.minute.level
+    feedData: "", // hour.minute.level
   },
   reducers: {
     setCmd(state, action) {
@@ -64,7 +64,7 @@ const cmdSlice = createSlice({
       state.light_mode = action.payload.light_mode;
       state.tempA = action.payload.tempA;
       state.tempB = action.payload.tempB;
-      state.feed = action.payload.feed;
+      state.feedData = action.payload.feedData;
     },
     setLightUnit(state, action) {
       state.light_unit = action.payload.light_unit;
@@ -78,8 +78,8 @@ const cmdSlice = createSlice({
     setTempB(state, action) {
       state.tempB = action.payload.tempB;
     },
-    setFeed(state, action) {
-      state.feed = action.payload.feed;
+    setFeedData(state, action) {
+      state.feedData = action.payload.feedData;
     },
   },
 });
@@ -90,7 +90,7 @@ export const {
   setLightMode,
   setTempA,
   setTempB,
-  setFeed,
+  setFeedData,
 } = cmdSlice.actions;
 
 export const store = configureStore({
