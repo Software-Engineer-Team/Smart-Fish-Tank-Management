@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -15,8 +15,9 @@ import { Readings } from "../components";
 import {
   REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
   REACT_NATIVE_APP_X_AIO_USERNAME,
-  REACT_NATIVE_APP_X_AIO_KEY,
 } from "@env";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 export default function Statistics() {
   const navigation = useNavigation();
@@ -24,6 +25,21 @@ export default function Statistics() {
     readings: true,
     actions: false,
   });
+  const [actions, setActions] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [labels, setLabels] = useState([]);
+
+  const [dataSets, setDataSets] = useState({
+    temp1: [],
+    temp2: [],
+    moisture: [],
+    light: [],
+  });
+
+  const AIO_KEY = useSelector((state) => state.user.ada_key);
+  const LIMIT = 9;
+  const URL_LOG = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/log/data?X_AIO_Key=${AIO_KEY}&limit=${LIMIT}`;
+  const URL_ACTIVITY = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/log-activity/data?X_AIO_Key=${AIO_KEY}`;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -44,6 +60,68 @@ export default function Statistics() {
       },
     });
   });
+
+  useEffect(() => {
+    fetch(URL_LOG)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        const labels_data = [];
+        const datasets_temp1 = [];
+        const datasets_temp2 = [];
+        const datasets_light = [];
+        const datasets_moisture = [];
+        for (let i = 0; i < LIMIT && res.length > 0; i++) {
+          if (i === 0) {
+            setStartDate(
+              moment(new Date(res[i]["created_at"])).format("MMMM Do YYYY")
+            );
+          }
+          labels_data.push(
+            moment(new Date(res[i]["created_at"])).format("HH:mm:ss")
+          );
+          const dataset_vals = res[i]["value"].split(" ");
+          datasets_temp1.push(parseInt(dataset_vals[0]));
+          datasets_temp2.push(parseInt(dataset_vals[1]));
+          datasets_moisture.push(parseInt(dataset_vals[2]));
+          datasets_light.push(parseInt(dataset_vals[3]));
+        }
+        datasets_temp1.reverse();
+        datasets_temp2.reverse();
+        datasets_moisture.reverse();
+        datasets_light.reverse();
+        labels_data.reverse();
+        setLabels(labels_data);
+        setDataSets({
+          temp1: datasets_temp1,
+          temp2: datasets_temp2,
+          moisture: datasets_moisture,
+          light: datasets_light,
+        });
+      })
+      .catch((err) => console.log(err));
+
+    fetch(URL_ACTIVITY)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log("RES", res);
+        let actions_data = [];
+        res.forEach((r) => {
+          actions_data.push({
+            created_at: moment(new Date(r["created_at"])).format(
+              "Do MMMM YYYY, h:mm:ss a"
+            ),
+            id: parseInt(r["value"].split("-")[0]),
+            text: r["value"].split("-")[1],
+          });
+        });
+        setActions(actions_data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -76,18 +154,36 @@ export default function Statistics() {
         {show.readings ? (
           <View>
             <Readings
-              title="Temperature"
-              url={`${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`}
+              title="Temperature Inside"
+              startDate={startDate}
+              labels={labels}
+              datasets={dataSets.temp1}
               ysuffix="°C"
             />
             <Readings
-              title="Lighting"
-              url={`${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`}
-              ysuffix="%"
+              title="Temperature Outside"
+              startDate={startDate}
+              labels={labels}
+              datasets={dataSets.temp2}
+              ysuffix="°C"
+            />
+            <Readings
+              title="Moisture"
+              startDate={startDate}
+              labels={labels}
+              datasets={dataSets.moisture}
+              ysuffix="°C"
+            />
+            <Readings
+              title="Light"
+              startDate={startDate}
+              labels={labels}
+              datasets={dataSets.light}
+              ysuffix="°C"
             />
           </View>
         ) : (
-          <Actions />
+          <Actions actions={actions} />
         )}
       </ScrollView>
     </View>

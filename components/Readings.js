@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { colors } from "../theme";
 import moment from "moment";
 
 export default function Readings(props) {
-  const [startDate, setStartDate] = useState("");
   const [color, setColor] = useState(
-    props.title === "Temperature" ? "#d98e1b" : "#69ad05"
+    props.title === "Temperature Inside" ||
+      props.title === "Temperature Outside"
+      ? "#d98e1b"
+      : props.title === "Light"
+        ? "#69ad05"
+        : "#007cf1"
   );
   const [data, setData] = useState({
     labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
@@ -49,50 +52,29 @@ export default function Readings(props) {
   };
 
   useEffect(() => {
-    if (props.url) {
-      fetch(props.url)
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          let labels = [];
-          let datasets = [];
-          for (let i = 0; i < Math.min(9, res.length); i++) {
-            if (i === 0) {
-              setStartDate(
-                moment(new Date(res[i]["created_at"])).format("MMMM Do YYYY")
-              );
-            }
-            labels.push(
-              moment(new Date(res[i]["created_at"])).format("HH:mm:ss")
-            );
-            datasets.push(parseInt(res[i]["value"]));
-          }
-          datasets.reverse();
-          labels.reverse();
-          setData({
-            labels,
-            datasets: [
-              {
-                data: datasets,
-                color: (opacity = 0.8) => {
-                  return color;
-                },
-              },
-              {
-                data: [15],
-                withDots: false,
-              },
-              {
-                data: [50],
-                withDots: false,
-              },
-            ],
-          });
-        })
-        .catch((err) => console.log(err));
+    if (props.labels.length > 0 && props.datasets.length > 0) {
+      setData({
+        labels: props.labels,
+        datasets: [
+          {
+            data: props.datasets,
+            color: (opacity = 0.8) => {
+              return color;
+            },
+          },
+          {
+            data: [15],
+            withDots: false,
+          },
+          {
+            data: [50],
+            withDots: false,
+          },
+        ],
+      });
     }
-  }, [props.url, color]);
+  }, [props.labels, props.datasets]);
+
   return (
     <View style={styles.container}>
       <View>
@@ -110,7 +92,7 @@ export default function Readings(props) {
           </Text>
         </View>
         <Text style={{ textAlign: "center", fontSize: 15, marginTop: 10 }}>
-          Showing data from: {startDate}
+          Showing data from: {props.startDate}
         </Text>
       </View>
       <LineChart
