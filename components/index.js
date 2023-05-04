@@ -9,6 +9,7 @@ import CheckBoxField from "./ui/CheckBoxField";
 import Divider from "./ui/Divider";
 import FeedingSlice from "./FeedingSlice";
 import FeedingView from "./FeedingView";
+import TempDisplay from "./TempDisplay";
 
 export {
   CheckBoxField,
@@ -22,4 +23,5 @@ export {
   Readings,
   FeedingSlice,
   FeedingView,
+  TempDisplay,
 };
