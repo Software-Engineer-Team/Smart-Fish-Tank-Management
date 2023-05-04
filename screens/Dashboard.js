@@ -99,7 +99,7 @@ export default function Dashboard() {
     return () => {
       // client.end();
     };
-  }, []);
+  }, [AIO_KEY, dispatch]);
 
   const Logouthandler = () => {
     dispatch(
