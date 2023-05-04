@@ -71,7 +71,7 @@ export default function LightSettings() {
     dispatch(setLight({ light: parseInt(value, 10) }));
     client.publish(
       TOPICS[1],
-      `${value} ${isAutomic} ${tempA} ${tempB} ${feedData}`
+      `${value} ${isAutomic === true ? 1 : 0} ${tempA} ${tempB} ${feedData}`
     );
   };
 
