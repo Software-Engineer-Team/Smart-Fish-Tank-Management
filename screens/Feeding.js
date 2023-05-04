@@ -108,7 +108,9 @@ export default function CreateFeeding() {
           console.log(TOPICS);
           client.publish(
             TOPICS[2],
-            !data ? "5-Feeding the fish" : "3-The feeding time has been changed"
+            !data
+              ? "3-Create the new feeding time"
+              : "3-The feeding time has been changed"
           );
           navigation.navigate("Feeding-Setting", {
             name: "Feeding-Setting",
