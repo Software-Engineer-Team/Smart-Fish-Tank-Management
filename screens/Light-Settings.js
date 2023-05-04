@@ -23,7 +23,6 @@ export default function LightSettings() {
 
   const navigation = useNavigation();
   const light = useSelector((state) => parseInt(state.log.light, 10));
-  // const isAutomic = useSelector((state) => state.cmd.light_mode);
   const {
     tempA,
     tempB,
@@ -90,7 +89,7 @@ export default function LightSettings() {
           }}
         >
           <Text style={{ color: "white", fontWeight: "bold" }}>
-            {isAutomic ? "ON" : "OFF"}
+            {isAutomic ? "AUTOMIC" : "MANUAL"}
           </Text>
         </View>
         <Switch

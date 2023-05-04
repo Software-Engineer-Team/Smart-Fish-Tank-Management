@@ -77,7 +77,7 @@ export default function Dashboard() {
           dispatch(
             setCmd({
               light_unit: cmd[0],
-              light_mode: cmd[1],
+              light_mode: cmd[1] === "1" ? true : false,
               tempA: cmd[2],
               tempB: cmd[3],
               feed: cmd[4],
