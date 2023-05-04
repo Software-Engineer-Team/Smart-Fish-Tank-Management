@@ -1,7 +1,6 @@
 import React, { useState, useLayoutEffect } from "react";
 import {
   View,
-  Button,
   StyleSheet,
   Pressable,
   TouchableWithoutFeedback,
@@ -11,7 +10,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as theme from "../theme";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { TextInput } from "react-native-gesture-handler";
 import { setFeedData, store } from "../store";
 import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import Slider from "@react-native-community/slider";

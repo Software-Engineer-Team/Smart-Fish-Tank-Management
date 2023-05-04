@@ -1,19 +1,16 @@
 import mqtt from "precompiled-mqtt";
-import { REACT_NATIVE_APP_X_AIO_USERNAME } from "@env";
 // import { socket } from "./socketio";
 
 const URL = "wss://io.adafruit.com:443/mqtt/";
-const TOPICS = [
-  `${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/LOG`,
-  `${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/CMD`,
-];
-let client = null;
+let client = null,
+  TOPICS = null;
 
-const onConnect = ({ io_key }) => {
+const onConnect = ({ io_key, username, TPS }) => {
   client = mqtt.connect(URL, {
-    username: REACT_NATIVE_APP_X_AIO_USERNAME,
+    username,
     password: io_key,
   });
+  TOPICS = TPS;
 
   client.on("connect", () => {
     console.log("MQTT client connected.");
