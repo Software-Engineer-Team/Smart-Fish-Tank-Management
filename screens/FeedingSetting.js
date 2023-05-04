@@ -50,7 +50,8 @@ export default function FeedingSetting() {
       dispatch(setFeedData({ feedData: feed_data.join("/") }));
       client.publish(
         TOPICS[1],
-        `${light_unit} ${light_mode === 0 ? "0" : "1"
+        `${light_unit} ${
+          light_mode === 0 ? "0" : "1"
         } ${tempA} ${tempB} ${feed_data.join("/")}`
       );
     }
@@ -80,7 +81,7 @@ export default function FeedingSetting() {
   useEffect(() => {
     fetch(
       `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding/` +
-      store.getState().user.ObjectID,
+        store.getState().user.ObjectID,
       { method: "GET" }
     )
       .then((res) => {

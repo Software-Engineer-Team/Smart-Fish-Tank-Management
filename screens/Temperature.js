@@ -41,7 +41,7 @@ export default function Temperature() {
       />
       <TempDisplay
         title="Moisture"
-        text="inside the tank"
+        text="above the tank"
         value={Math.round(moisture * 100) / 100}
       />
       <TempDisplay

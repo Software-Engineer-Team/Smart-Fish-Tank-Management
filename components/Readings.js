@@ -8,9 +8,9 @@ export default function Readings(props) {
     props.title === "Temperature Inside" ||
       props.title === "Temperature Outside"
       ? "#d98e1b"
-      : props.title === "Light"
-        ? "#69ad05"
-        : "#007cf1"
+      : props.title === "Light Outside"
+      ? "#69ad05"
+      : "#007cf1"
   );
   const [data, setData] = useState({
     labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
@@ -25,11 +25,6 @@ export default function Readings(props) {
       },
     ],
   });
-  const horizontalLine = {
-    y: 120, // Y-coordinate of the horizontal line
-    color: "grey", // Color of the horizontal line
-    strokeWidth: 2, // Width of the horizontal line
-  };
   // const screenWidth = Dimensions.get("window").width;
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -108,35 +103,6 @@ export default function Readings(props) {
         bezier
         style={{
           marginVertical: 8,
-        }}
-        decorator={() => {
-          return (
-            <View>
-              <Text
-                style={{
-                  position: "absolute",
-                  left: 60,
-                  top: horizontalLine.y - 20,
-                  right: 10,
-                  color: "grey",
-                  opacity: 0.6,
-                }}
-              >
-                THRESHOLD
-              </Text>
-              <View
-                style={{
-                  position: "absolute",
-                  left: 60,
-                  top: horizontalLine.y,
-                  right: 10,
-                  borderBottomWidth: horizontalLine.strokeWidth,
-                  borderBottomColor: horizontalLine.color,
-                  opacity: 0.6,
-                }}
-              />
-            </View>
-          );
         }}
       />
     </View>

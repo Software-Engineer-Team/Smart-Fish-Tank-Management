@@ -171,14 +171,14 @@ export default function Statistics() {
               startDate={startDate}
               labels={labels}
               datasets={dataSets.moisture}
-              ysuffix="°C"
+              ysuffix="%"
             />
             <Readings
-              title="Light"
+              title="Light Outside"
               startDate={startDate}
               labels={labels}
               datasets={dataSets.light}
-              ysuffix="°C"
+              ysuffix=" Lux"
             />
           </View>
         ) : (
