@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
-  REACT_NATIVE_APP_X_AIO_USERNAME,
-  REACT_NATIVE_APP_X_AIO_KEY,
-} from "@env";
+import React, { useEffect, useMemo } from "react";
+import { REACT_NATIVE_APP_ENDPOINT_X_AIO_API } from "@env";
 import {
   ScrollView,
   StyleSheet,
@@ -17,7 +13,7 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-import { client, TOPICS } from "../utils/mqtt";
+import { client } from "../utils/mqtt";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { setCmd, setLog, setUser } from "../store";
@@ -32,7 +28,12 @@ export default function Dashboard() {
   const ReminderIcon = settings.reminder.icon;
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const AIO_KEY = useSelector((state) => state.user.ada_key);
+  const { ada_key: AIO_KEY, username: AIO_USERNAME } = useSelector(
+    (state) => state.user
+  );
+  const TOPICS = useMemo(() => {
+    return [`${AIO_USERNAME}/feeds/LOG`, `${AIO_USERNAME}/feeds/CMD`];
+  }, [AIO_USERNAME]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,14 +44,13 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = () => {
       fetch(
-        `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/log/data?X_AIO_Key=${AIO_KEY}`
+        `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${AIO_USERNAME}/feeds/log/data?X_AIO_Key=${AIO_KEY}`
       )
         .then((result) => {
           return result.json();
         })
         .then((data) => {
           const log = data[0]["value"].split(" ");
-          // console.log(log, data);
 
           dispatch(
             setLog({
@@ -61,14 +61,14 @@ export default function Dashboard() {
               lamp: log[4],
               fan: log[5],
               heat: log[6],
-              feed: log[7],
+              feedData: log[7],
             })
           );
         })
         .catch((err) => console.error(err));
 
       fetch(
-        `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/cmd/data?X_AIO_Key=${AIO_KEY}`
+        `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${AIO_USERNAME}/feeds/cmd/data?X_AIO_Key=${AIO_KEY}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -80,26 +80,54 @@ export default function Dashboard() {
               light_mode: cmd[1] === "1" ? true : false,
               tempA: cmd[2],
               tempB: cmd[3],
-              feed: cmd[4],
+              feedData: cmd[4],
             })
           );
         })
         .catch((err) => console.log(err));
     };
-    fetchData();
+    if (AIO_KEY !== "" && AIO_USERNAME !== "") {
+      fetchData();
+    }
+  }, [AIO_KEY, AIO_USERNAME, dispatch]);
 
-    client.on("message", (topic, message) => {
-      console.log("Message is on " + topic + " topic");
-      if (topic === TOPICS[0]) {
-      } else if (topic === TOPICS[1]) {
-      }
-      console.log(message.toString());
-    });
-
-    return () => {
-      // client.end();
-    };
-  }, [AIO_KEY, dispatch]);
+  useEffect(() => {
+    if (client !== null) {
+      client.on("message", (topic, message) => {
+        console.log("Message is on " + topic + " topic");
+        if (topic === TOPICS[0]) {
+          const log = message.toString().split(" ");
+          dispatch(
+            setLog({
+              temp1: log[0],
+              temp2: log[1],
+              moisture: log[2],
+              light: log[3],
+              lamp: log[4],
+              fan: log[5],
+              heat: log[6],
+              feedData: log[7],
+            })
+          );
+        } else if (topic === TOPICS[1]) {
+          const cmd = message.toString().split(" ");
+          dispatch(
+            setCmd({
+              light_unit: cmd[0],
+              light_mode: cmd[1] === "1" ? true : false,
+              tempA: cmd[2],
+              tempB: cmd[3],
+              feedData: cmd[4],
+            })
+          );
+        }
+        console.log(message.toString());
+      });
+      return () => {
+        client.end();
+      };
+    }
+  }, [TOPICS, dispatch]);
 
   const Logouthandler = () => {
     dispatch(
@@ -189,7 +217,7 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Temperature-Settings", {
+                navigation.navigate("Temperature", {
                   name: "temperature",
                 })
               }

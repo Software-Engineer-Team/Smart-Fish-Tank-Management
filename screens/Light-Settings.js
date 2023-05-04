@@ -26,7 +26,7 @@ export default function LightSettings() {
   const {
     tempA,
     tempB,
-    feed,
+    feedData,
     light_mode: isAutomic,
   } = useSelector((state) => state.cmd);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -63,7 +63,7 @@ export default function LightSettings() {
     dispatch(setLightMode({ light_mode: value }));
     client.publish(
       TOPICS[1],
-      `${light} ${value === true ? 1 : 0} ${tempA} ${tempB} ${feed}`
+      `${light} ${value === true ? 1 : 0} ${tempA} ${tempB} ${feedData}`
     );
   };
 
@@ -71,7 +71,7 @@ export default function LightSettings() {
     dispatch(setLight({ light: parseInt(value, 10) }));
     client.publish(
       TOPICS[1],
-      `${value} ${isAutomic} ${tempA} ${tempB} ${feed}`
+      `${value} ${isAutomic} ${tempA} ${tempB} ${feedData}`
     );
   };
 

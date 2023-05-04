@@ -82,10 +82,15 @@ export default function Login() {
           if (result.message === "Wrong username or passowrd") AlertLogin();
           else {
             const io_key = result.user.ada_key;
-            onConnect({ io_key });
+            const un = result.user.username;
+            onConnect({
+              io_key,
+              username: un,
+              TPS: [`${un}/feeds/LOG`, `${un}/feeds/CMD`],
+            });
             dispatch(
               setUser({
-                username: result.user.username,
+                username: un,
                 ada_key: io_key,
                 ObjectID: result.user._id,
               })

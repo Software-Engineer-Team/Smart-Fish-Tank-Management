@@ -7,10 +7,11 @@ import * as theme from "./theme";
 export default {
   light: {
     name: "Light",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="lightbulb-on-outline"
         {...props}
       />
@@ -18,10 +19,11 @@ export default {
   },
   ac: {
     name: "AC",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="air-conditioner"
         {...props}
       />
@@ -29,10 +31,11 @@ export default {
   },
   statistics: {
     name: "Statistics",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="chart-areaspline"
         {...props}
       />
@@ -40,10 +43,11 @@ export default {
   },
   temperatureCelsius: {
     name: "Temperature",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="temperature-celsius"
         {...props}
       />
@@ -51,21 +55,47 @@ export default {
   },
   temperature: {
     name: "Temperature",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="coolant-temperature"
+        {...props}
+      />
+    ),
+  },
+  percent: {
+    name: "Percent",
+    icon: ({ size, color, style, ...props }) => (
+      <MaterialCommunityIcons
+        size={size || theme.sizes.font}
+        color={color || theme.colors.base}
+        style={style}
+        name="percent"
+        {...props}
+      />
+    ),
+  },
+  moisture: {
+    name: "Moisture",
+    icon: ({ size, color, style, ...props }) => (
+      <MaterialCommunityIcons
+        size={size || theme.sizes.font}
+        color={color || theme.colors.base}
+        style={style}
+        name="water-percent"
         {...props}
       />
     ),
   },
   profile: {
     name: "Profile",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="person"
         {...props}
       />
@@ -73,10 +103,11 @@ export default {
   },
   feeding: {
     name: "Feeding",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="schedule"
         {...props}
       />
@@ -84,10 +115,11 @@ export default {
   },
   electricity: {
     name: "Electricity",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="power"
         {...props}
       />
@@ -95,10 +127,11 @@ export default {
   },
   reminder: {
     name: "Reminder",
-    icon: ({ size, color, ...props }) => (
+    icon: ({ size, color, style, ...props }) => (
       <MaterialCommunityIcons
         size={size || theme.sizes.font}
         color={color || theme.colors.base}
+        style={style}
         name="reminder"
         {...props}
       />
