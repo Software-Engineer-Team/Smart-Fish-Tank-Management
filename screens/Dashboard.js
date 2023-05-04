@@ -17,12 +17,10 @@ import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
 import settings from "../settings";
-import { client, messageHandler } from "../utils/mqtt";
+import { client, TOPICS } from "../utils/mqtt";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store";
-
-let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
+import { useDispatch, useSelector } from "react-redux";
+import { setCmd, setLog, setUser } from "../store";
 
 export default function Dashboard() {
   const LightIcon = settings.light.icon;
@@ -32,9 +30,9 @@ export default function Dashboard() {
   const ProfileIcon = settings.profile.icon;
   const FeedingIcon = settings.feeding.icon;
   const ReminderIcon = settings.reminder.icon;
-  const [temp, setTemp] = useState(0);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const AIO_KEY = useSelector((state) => state.user.ada_key);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -44,20 +42,62 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = () => {
-      fetch(url)
+      fetch(
+        `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/log/data?X_AIO_Key=${AIO_KEY}`
+      )
         .then((result) => {
           return result.json();
         })
         .then((data) => {
-          setTemp(parseInt(data[0]["value"]));
+          const log = data[0]["value"].split(" ");
+          // console.log(log, data);
+
+          dispatch(
+            setLog({
+              temp1: log[0],
+              temp2: log[1],
+              moisture: log[2],
+              light: log[3],
+              lamp: log[4],
+              fan: log[5],
+              heat: log[6],
+              feed: log[7],
+            })
+          );
         })
         .catch((err) => console.error(err));
+
+      fetch(
+        `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/cmd/data?X_AIO_Key=${AIO_KEY}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const cmd = data[0]["value"].split(" ");
+          // console.log(cmd);
+          dispatch(
+            setCmd({
+              light_unit: cmd[0],
+              light_mode: cmd[1],
+              tempA: cmd[2],
+              tempB: cmd[3],
+              feed: cmd[4],
+            })
+          );
+        })
+        .catch((err) => console.log(err));
     };
     fetchData();
-    messageHandler((message) => setTemp(message));
+
+    client.on("message", (topic, message) => {
+      console.log("Message is on " + topic + " topic");
+      if (topic === TOPICS[0]) {
+      } else if (topic === TOPICS[1]) {
+      }
+      console.log(message.toString());
+    });
 
     return () => {
-      client.end();
+      // client.end();
     };
   }, []);
 
@@ -152,7 +192,6 @@ export default function Dashboard() {
               onPress={() =>
                 navigation.navigate("Temperature-Settings", {
                   name: "temperature",
-                  value: temp,
                 })
               }
             >

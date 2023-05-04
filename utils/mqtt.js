@@ -3,8 +3,11 @@ import { REACT_NATIVE_APP_X_AIO_USERNAME } from "@env";
 // import { socket } from "./socketio";
 
 const URL = "wss://io.adafruit.com:443/mqtt/";
-const TOPICS = [`${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/tempstatus`];
-let client;
+const TOPICS = [
+  `${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/LOG`,
+  `${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/CMD`,
+];
+let client = null;
 
 const onConnect = ({ io_key }) => {
   client = mqtt.connect(URL, {
@@ -28,31 +31,4 @@ const onConnect = ({ io_key }) => {
   });
 };
 
-const messageHandler = (callBack) => {
-  let lastTemp = null;
-  let lastLight = null;
-  console.log(client);
-
-  client.on("message", (topic, message) => {
-    console.log("Message is on " + topic + " topic");
-    if (topic === TOPICS[0]) {
-      lastTemp = message.toString();
-    } else if (topic === TOPICS[1]) {
-      lastLight = message.toString();
-    }
-    callBack(message.toString());
-
-    if (lastTemp !== null && lastLight !== null) {
-      // socket.emit("data", {
-      //   temp: lastTemp,
-      //   light: lastLight,
-      //   time: "11:00am",
-      // });
-
-      lastTemp = null;
-      lastLight = null;
-    }
-  });
-};
-
-export { onConnect, messageHandler, client };
+export { onConnect, client, TOPICS };

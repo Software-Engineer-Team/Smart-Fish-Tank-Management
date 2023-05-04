@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { messageHandler } from "../utils/mqtt";
-import {
-  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
-  REACT_NATIVE_APP_X_AIO_USERNAME,
-  REACT_NATIVE_APP_X_AIO_KEY,
-} from "@env";
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -18,9 +12,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
-// import { messageHandler } from "../utils/mqtt";
-let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
-let MAXIMUMVALUE = 4096;
+import { TOPICS, client } from "../utils/mqtt";
+import { useDispatch, useSelector } from "react-redux";
+import { setLight, setLightMode } from "../store";
 
 export default function LightSettings() {
   const {
@@ -28,8 +22,16 @@ export default function LightSettings() {
   } = useRoute();
 
   const navigation = useNavigation();
+  const light = useSelector((state) => parseInt(state.log.light, 10));
+  // const isAutomic = useSelector((state) => state.cmd.light_mode);
+  const {
+    tempA,
+    tempB,
+    feed,
+    light_mode: isAutomic,
+  } = useSelector((state) => state.cmd);
   const [isEnabled, setIsEnabled] = useState(false);
-  const [brightness, setBrightness] = useState(0);
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -52,50 +54,26 @@ export default function LightSettings() {
   });
 
   useEffect(() => {
-    const fetchData = () => {
-      fetch(url)
-        .then((result) => {
-          return result.json();
-        })
-        .then((data) => {
-          let bn = parseInt(((data[0].value / MAXIMUMVALUE) * 100).toFixed(2));
-          setBrightness(bn);
-          if (bn >= 50) {
-            return setIsEnabled(true);
-          }
-          setIsEnabled(false);
-        })
-        .catch((error) => console.error(error));
+    if (light >= 50) {
+      return setIsEnabled(true);
+    }
+    setIsEnabled(false);
+  }, [light]);
 
-      messageHandler((message) => {
-        let bn = parseInt(((message / MAXIMUMVALUE) * 100).toFixed(2));
-        setBrightness(bn);
-        if (bn >= 50) {
-          return setIsEnabled(true);
-        }
-        setIsEnabled(false);
-      });
-    };
-    fetchData();
-  }, []);
-
-  const toggleSwitch = () => {
-    setIsEnabled((previousState) => {
-      if (previousState) {
-        setBrightness(0);
-      } else {
-        setBrightness(100);
-      }
-      return !previousState;
-    });
+  const toggleSwitch = (value) => {
+    dispatch(setLightMode({ light_mode: value }));
+    client.publish(
+      TOPICS[1],
+      `${light} ${value === true ? 1 : 0} ${tempA} ${tempB} ${feed}`
+    );
   };
 
   const sliderChange = (value) => {
-    setBrightness(parseInt(value, 10));
-    if (brightness >= 50) {
-      return setIsEnabled(true);
-    }
-    return setIsEnabled(false);
+    dispatch(setLight({ light: parseInt(value, 10) }));
+    client.publish(
+      TOPICS[1],
+      `${value} ${isAutomic} ${tempA} ${tempB} ${feed}`
+    );
   };
 
   return (
@@ -106,21 +84,21 @@ export default function LightSettings() {
             width: 80,
             height: 30,
             borderRadius: 25,
-            backgroundColor: isEnabled ? "green" : "red",
+            backgroundColor: isAutomic ? "green" : "red",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
           <Text style={{ color: "white", fontWeight: "bold" }}>
-            {isEnabled ? "ON" : "OFF"}
+            {isAutomic ? "ON" : "OFF"}
           </Text>
         </View>
         <Switch
           trackColor={{ false: "#767577", true: "#5087c6" }}
-          thumbColor={isEnabled ? "#fff88e" : "#f4f3f4"}
+          thumbColor={isAutomic ? "#fff88e" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
-          value={isEnabled}
+          value={isAutomic}
           style={{
             transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
           }}
@@ -157,7 +135,7 @@ export default function LightSettings() {
               left: 5,
             }}
           >
-            {brightness}%
+            {light}%
           </Text>
         </ImageBackground>
       </View>
@@ -167,11 +145,11 @@ export default function LightSettings() {
             Light
           </Text>
           <Text welcome color="black">
-            {brightness}%
+            {light}%
           </Text>
         </Block>
         <Slider
-          value={brightness}
+          value={light}
           mininumValue={0}
           maximumValue={100}
           thumbTintColor={"#5087c6"}

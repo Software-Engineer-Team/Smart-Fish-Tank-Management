@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { REACT_NATIVE_APP_ENDPOINT_SERVER1 } from "@env";
 import {
-  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
-  REACT_NATIVE_APP_X_AIO_USERNAME,
-  REACT_NATIVE_APP_X_AIO_KEY,
-  REACT_NATIVE_APP_ENDPOINT_SERVER1,
-} from "@env";
-import {
-  Button,
   View,
-  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Dimensions,
@@ -24,7 +17,6 @@ import { useLayoutEffect } from "react";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text, ReminderSlice, ReminderView } from "../components";
-// import { client, messageHandler } from "../utils/mqtt";
 import { ScrollView } from "react-native-gesture-handler";
 import { store } from "../store";
 

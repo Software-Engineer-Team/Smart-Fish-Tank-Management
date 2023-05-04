@@ -20,7 +20,7 @@ import { Text } from "react-native";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block } from "../components";
-// import { client, messageHandler } from "../utils/mqtt";
+// import { client } from "../utils/mqtt";
 import { store } from "../store";
 import { FeedingView } from "../components";
 
