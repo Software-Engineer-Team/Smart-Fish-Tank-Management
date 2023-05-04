@@ -156,17 +156,16 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Light-Settings", { name: "light" })
+                navigation.navigate("Profile", { name: "Profile" })
               }
             >
               <Block center middle style={styles.button}>
-                <LightIcon size={38} />
+                <ProfileIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["light"].name}
+                  {settings["profile"].name}
                 </Text>
               </Block>
             </TouchableOpacity>
-
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
@@ -206,13 +205,13 @@ export default function Dashboard() {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                navigation.navigate("Profile", { name: "Profile" })
+                navigation.navigate("Light-Settings", { name: "light" })
               }
             >
               <Block center middle style={styles.button}>
-                <ProfileIcon size={38} />
+                <LightIcon size={38} />
                 <Text button style={{ marginTop: theme.sizes.base * 0.5 }}>
-                  {settings["profile"].name}
+                  {settings["light"].name}
                 </Text>
               </Block>
             </TouchableOpacity>
