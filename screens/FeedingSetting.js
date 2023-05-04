@@ -29,7 +29,7 @@ import { TOPICS, client } from "../utils/mqtt";
 export default function FeedingSetting() {
   const [feed, setFeed] = useState([]);
   const dispatch = useDispatch();
-  // const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
 
   const { tempA, tempB, light_mode, light_unit } = useSelector(
     (state) => state.cmd
@@ -93,7 +93,7 @@ export default function FeedingSetting() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [isFocused]);
 
   const navigation = useNavigation();
   useLayoutEffect(() => {

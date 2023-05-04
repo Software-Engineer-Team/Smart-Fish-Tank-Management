@@ -32,7 +32,11 @@ export default function Dashboard() {
     (state) => state.user
   );
   const TOPICS = useMemo(() => {
-    return [`${AIO_USERNAME}/feeds/LOG`, `${AIO_USERNAME}/feeds/CMD`];
+    return [
+      `${AIO_USERNAME}/feeds/LOG`,
+      `${AIO_USERNAME}/feeds/CMD`,
+      `${AIO_USERNAME}/feeds/log-activity`,
+    ];
   }, [AIO_USERNAME]);
 
   useLayoutEffect(() => {

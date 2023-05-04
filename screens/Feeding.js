@@ -82,7 +82,7 @@ export default function CreateFeeding() {
   };
 
   const saveButtonHandler = () => {
-    const feed_time = `${time.hour}.${time.minute}.${level}`;
+    console.log("SAVE");
     const newFeeding = {
       id: data ? data._id : undefined,
       user_id: store.getState().user.ObjectID,
@@ -101,15 +101,14 @@ export default function CreateFeeding() {
         return res.json();
       })
       .then((result) => {
+        console.log(result);
         if (result.message === "Feeding have the same time with other!") {
           AlertTime();
         } else {
-          console.log("TEST");
-          dispatch(setFeedData({ feedData: feedData + feed_time }));
+          console.log(TOPICS);
           client.publish(
-            TOPICS[1],
-            `${light_unit} ${light_mode === 0 ? "0" : "1"} ${tempA} ${tempB} ${feedData + feed_time
-            }`
+            TOPICS[2],
+            !data ? "5-Feeding the fish" : "3-The feeding time has been changed"
           );
           navigation.navigate("Feeding-Setting", {
             name: "Feeding-Setting",

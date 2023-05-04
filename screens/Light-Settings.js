@@ -65,14 +65,18 @@ export default function LightSettings() {
       TOPICS[1],
       `${light} ${value === true ? 1 : 0} ${tempA} ${tempB} ${feedData}`
     );
+    console.log(TOPICS);
+    client.publish(
+      TOPICS[2],
+      "4-Turn on the light " + (value === true ? "automically" : "manually")
+    );
   };
 
   const sliderChange = (value) => {
     dispatch(setLight({ light: parseInt(value, 10) }));
-    client.publish(
-      TOPICS[1],
-      `${value} ${isAutomic === true ? 1 : 0} ${tempA} ${tempB} ${feedData}`
-    );
+    if (isAutomic === false) {
+      client.publish(TOPICS[1], `${value} 0 ${tempA} ${tempB} ${feedData}`);
+    }
   };
 
   return (

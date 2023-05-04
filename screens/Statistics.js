@@ -120,7 +120,7 @@ export default function Statistics() {
         setActions(actions_data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [URL_LOG, URL_ACTIVITY]);
 
   return (
     <View style={styles.container}>

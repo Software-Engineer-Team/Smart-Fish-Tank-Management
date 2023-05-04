@@ -86,7 +86,11 @@ export default function Login() {
             onConnect({
               io_key,
               username: un,
-              TPS: [`${un}/feeds/LOG`, `${un}/feeds/CMD`],
+              TPS: [
+                `${un}/feeds/LOG`,
+                `${un}/feeds/CMD`,
+                `${un}/feeds/log-activity`,
+              ],
             });
             dispatch(
               setUser({
