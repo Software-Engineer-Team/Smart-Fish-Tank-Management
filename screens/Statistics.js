@@ -12,10 +12,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Actions from "../components/Actions";
 import * as theme from "../theme";
 import { Readings } from "../components";
-import {
-  REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
-  REACT_NATIVE_APP_X_AIO_USERNAME,
-} from "@env";
+import { REACT_NATIVE_APP_ENDPOINT_X_AIO_API } from "@env";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
@@ -25,6 +22,10 @@ export default function Statistics() {
     readings: true,
     actions: false,
   });
+
+  const { ada_key: AIO_KEY, username: AIO_USERNAME } = useSelector(
+    (state) => state.user
+  );
   const [actions, setActions] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [labels, setLabels] = useState([]);
@@ -35,11 +36,9 @@ export default function Statistics() {
     moisture: [],
     light: [],
   });
-
-  const AIO_KEY = useSelector((state) => state.user.ada_key);
   const LIMIT = 9;
-  const URL_LOG = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/log/data?X_AIO_Key=${AIO_KEY}&limit=${LIMIT}`;
-  const URL_ACTIVITY = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/log-activity/data?X_AIO_Key=${AIO_KEY}`;
+  const URL_LOG = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${AIO_USERNAME}/feeds/log/data?X_AIO_Key=${AIO_KEY}&limit=${LIMIT}`;
+  const URL_ACTIVITY = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${AIO_USERNAME}/feeds/log-activity/data?X_AIO_Key=${AIO_KEY}`;
 
   useLayoutEffect(() => {
     navigation.setOptions({
