@@ -24,7 +24,7 @@ import { useLayoutEffect } from "react";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block, Text, ReminderSlice, ReminderView } from "../components";
-import { client, messageHandler } from "../utils/mqtt";
+// import { client, messageHandler } from "../utils/mqtt";
 import { ScrollView } from "react-native-gesture-handler";
 import { store } from "../store";
 
@@ -41,7 +41,7 @@ export default function Reminder() {
   useEffect(() => {
     fetch(
       `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/reminder/` +
-        store.getState().user.ObjectID,
+      store.getState().user.ObjectID,
       { method: "GET" }
     )
       .then((res) => {

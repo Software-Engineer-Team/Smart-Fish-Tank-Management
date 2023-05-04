@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { client, messageHandler } from "../utils/mqtt";
+import { messageHandler } from "../utils/mqtt";
 import {
   REACT_NATIVE_APP_ENDPOINT_X_AIO_API,
   REACT_NATIVE_APP_X_AIO_USERNAME,
@@ -18,7 +18,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import * as theme from "../theme";
 import { Block, Text } from "../components";
-import { messageHandler } from "../utils/mqtt";
+// import { messageHandler } from "../utils/mqtt";
 let url = `${REACT_NATIVE_APP_ENDPOINT_X_AIO_API}/${REACT_NATIVE_APP_X_AIO_USERNAME}/feeds/lightstatus/data?X_AIO_Key=${REACT_NATIVE_APP_X_AIO_KEY}`;
 let MAXIMUMVALUE = 4096;
 

@@ -20,7 +20,7 @@ import { Text } from "react-native";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
 import { Block } from "../components";
-import { client, messageHandler } from "../utils/mqtt";
+// import { client, messageHandler } from "../utils/mqtt";
 import { store } from "../store";
 import { FeedingView } from "../components";
 
@@ -55,7 +55,7 @@ export default function FeedingSetting() {
   useEffect(() => {
     fetch(
       `${REACT_NATIVE_APP_ENDPOINT_SERVER1}/feeding/` +
-        store.getState().user.ObjectID,
+      store.getState().user.ObjectID,
       { method: "GET" }
     )
       .then((res) => {

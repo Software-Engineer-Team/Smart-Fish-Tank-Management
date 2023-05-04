@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
+import { onConnect } from "../utils/mqtt";
 
 import {
   StyleSheet,
@@ -80,10 +81,12 @@ export default function Login() {
         } else {
           if (result.message === "Wrong username or passowrd") AlertLogin();
           else {
+            const io_key = result.user.ada_key;
+            onConnect({ io_key });
             dispatch(
               setUser({
                 username: result.user.username,
-                ada_key: result.user.ada_key,
+                ada_key: io_key,
                 ObjectID: result.user._id,
               })
             );
