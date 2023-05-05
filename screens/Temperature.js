@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
@@ -8,8 +15,10 @@ import { TempDisplay } from "../components";
 import { useSelector } from "react-redux";
 
 export default function Temperature() {
-  const { temp1, temp2, moisture } = useSelector((state) => state.log);
-  console.log(temp1, temp2, moisture);
+  const { temp1, temp2, moisture, fan, heat } = useSelector(
+    (state) => state.log
+  );
+  console.log(temp1, temp2, moisture, fan, heat);
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -45,6 +54,16 @@ export default function Temperature() {
         value={Math.round(moisture * 100) / 100}
       />
       <TempDisplay
+        title="Heater"
+        text="inside the tank"
+        value={Math.round(heat * 10) / 10}
+      />
+      <TempDisplay
+        title="Fan"
+        text="inside the tank"
+        value={Math.round(fan * 10) / 10}
+      />
+      <TempDisplay
         title="Temperature"
         text="outside the tank"
         value={Math.round(temp2 * 10) / 10}
@@ -55,9 +74,8 @@ export default function Temperature() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
+    marginVertical: 20,
+    gap: 10,
     alignItems: "center",
-    justifyContent: "space-around",
   },
 });

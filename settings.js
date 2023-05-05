@@ -29,6 +29,30 @@ export default {
       />
     ),
   },
+  power: {
+    name: "Power",
+    icon: ({ size, color, style, ...props }) => (
+      <MaterialCommunityIcons
+        size={size || theme.sizes.font}
+        color={color || theme.colors.base}
+        style={style}
+        name="power"
+        {...props}
+      />
+    ),
+  },
+  fire: {
+    name: "Fire",
+    icon: ({ size, color, style, ...props }) => (
+      <MaterialCommunityIcons
+        size={size || theme.sizes.font}
+        color={color || theme.colors.base}
+        style={style}
+        name="fire"
+        {...props}
+      />
+    ),
+  },
   statistics: {
     name: "Statistics",
     icon: ({ size, color, style, ...props }) => (

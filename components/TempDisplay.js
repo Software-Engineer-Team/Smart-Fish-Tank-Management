@@ -2,18 +2,23 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import settings from "../settings";
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors, sizes } from "../theme";
 
 export default function TempDisplay(props) {
   const Icon =
     props.title === "Temperature"
       ? settings["light"].icon
-      : settings["moisture"].icon;
+      : props.title === "Fan"
+        ? settings["ac"].icon
+        : props.title === "Heater"
+          ? settings["fire"].icon
+          : settings["moisture"].icon;
   const Icon1 =
     props.title === "Temperature"
       ? settings["temperatureCelsius"].icon
-      : settings["percent"].icon;
+      : props.title === "Fan" || props.title === "Heater"
+        ? settings["power"].icon
+        : settings["percent"].icon;
 
   return (
     <View style={styles.container}>
@@ -80,6 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "90%",
     height: "30%",
+    flex: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.75,
