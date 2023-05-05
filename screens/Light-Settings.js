@@ -22,7 +22,9 @@ export default function LightSettings() {
   } = useRoute();
 
   const navigation = useNavigation();
-  const light = useSelector((state) => parseInt(state.log.light, 10));
+  const light = useSelector((state) =>
+    parseInt((1 - state.log.light / 1024) * 100, 10)
+  );
   const {
     tempA,
     tempB,
