@@ -65,7 +65,8 @@ export default function LightSettings() {
     dispatch(setLightMode({ light_mode: value }));
     client.publish(
       TOPICS[1],
-      `${light} ${value === true ? 1 : 0} ${tempA} ${tempB} ${feedData}`
+      `${parseInt((1 - light / 100) * 1024, 10)} ${value === true ? 1 : 0
+      } ${tempA} ${tempB} ${feedData}`
     );
     console.log(TOPICS);
     client.publish(
@@ -75,9 +76,16 @@ export default function LightSettings() {
   };
 
   const sliderChange = (value) => {
+    console.log(parseInt((1 - value / 100) * 1024, 10));
     dispatch(setLight({ light: parseInt(value, 10) }));
     if (isAutomic === false) {
-      client.publish(TOPICS[1], `${value} 0 ${tempA} ${tempB} ${feedData}`);
+      client.publish(
+        TOPICS[1],
+        `${parseInt(
+          (1 - value / 100) * 1024,
+          10
+        )} 0 ${tempA} ${tempB} ${feedData}`
+      );
     }
   };
 
