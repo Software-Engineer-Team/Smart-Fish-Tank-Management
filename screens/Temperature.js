@@ -56,12 +56,12 @@ export default function Temperature() {
       <TempDisplay
         title="Heater"
         text="inside the tank"
-        value={Math.round(heat * 10) / 10}
+        value={Math.round(heat * 10) / 10 === 0 ? "OFF" : "ON"}
       />
       <TempDisplay
         title="Fan"
         text="inside the tank"
-        value={Math.round(fan * 10) / 10}
+        value={Math.round(fan * 10) / 10 === 0 ? "OFF" : "ON"}
       />
       <TempDisplay
         title="Temperature"
