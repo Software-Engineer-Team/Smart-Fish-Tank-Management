@@ -22,9 +22,10 @@ export default function LightSettings() {
   } = useRoute();
 
   const navigation = useNavigation();
-  const light = useSelector((state) =>
-    parseInt((1 - state.log.light / 1024) * 100, 10)
-  );
+  // const light = useSelector((state) =>
+  //   parseInt((1 - state.log.light / 1024) * 100, 10)
+  // );
+  const light = useSelector((state) => parseInt(state.cmd.light_unit, 10));
   const {
     tempA,
     tempB,
@@ -65,8 +66,7 @@ export default function LightSettings() {
     dispatch(setLightMode({ light_mode: value }));
     client.publish(
       TOPICS[1],
-      `${parseInt((1 - light / 100) * 1024, 10)} ${value === true ? 1 : 0
-      } ${tempA} ${tempB} ${feedData}`
+      `${light} ${value === true ? 1 : 0} ${tempA} ${tempB} ${feedData}`
     );
     console.log(TOPICS);
     client.publish(
@@ -76,15 +76,12 @@ export default function LightSettings() {
   };
 
   const sliderChange = (value) => {
-    console.log(parseInt((1 - value / 100) * 1024, 10));
+    console.log(value);
     dispatch(setLight({ light: parseInt(value, 10) }));
     if (isAutomic === false) {
       client.publish(
         TOPICS[1],
-        `${parseInt(
-          (1 - value / 100) * 1024,
-          10
-        )} 0 ${tempA} ${tempB} ${feedData}`
+        `${parseInt(value, 10)} 0 ${tempA} ${tempB} ${feedData}`
       );
     }
   };
